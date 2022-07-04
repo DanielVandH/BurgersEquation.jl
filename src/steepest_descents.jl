@@ -13,6 +13,26 @@ function cubic_saddle_points(x, t)
 end
 
 """
+    cubic_discriminant(x, t)
+
+Computes the discriminant of the cubic polynomial `s³ - s^2x + s + t - x`.
+"""
+function cubic_discriminant(x, t)
+    return -4.0 - 27.0t^2 + 36.0t * x - 8.0x^2 + 4.0t * x^3 - 4.0x^4
+end
+
+""" 
+    CubicΔCaustic
+
+Plots the values of `CubicΔ(x, t)` that correspond to `Δ = 0`, for a given `x`.
+"""
+function CubicΔCaustic(x)
+    t₁ = 2x / 3 + 2x^3 / 27 - 2sqrt((x^2 - 3)^3) / 27
+    t₂ = 2x / 3 + 2x^3 / 27 + 2sqrt((x^2 - 3)^3) / 27
+    return t₁, t₂
+end
+
+"""
     saddle_point_approximation_μ(z, t, μ)
 
 Computes the small-μ saddle point approximation, `D(μ) ∼ sqrt(2μπ)[D₁ + D₂]` at time `t`,
