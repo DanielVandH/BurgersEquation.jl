@@ -34,4 +34,9 @@ include("slope_analysis.jl");       export maximum_slope
 include("numerical_soln.jl");       export viscous_solution_finite_diff
 include("aaa.jl");                  export viscous_solution_aaa
 
+const f = x -> 1 / (1 + x^2)
+const ∫f = s -> atan(s)
+const tₛ = 8sqrt(3) / 9
+export f, ∫f, tₛ
+
 end
