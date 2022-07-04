@@ -15,16 +15,19 @@ for all pairs of `t` and `μ`,
 # Outputs 
 - The maximum absolute slope.
 """
-function maximum_slope end 
+function maximum_slope end
 function maximum_slope(t::Float64, μ::Float64, nodes, weights, x₀)
     if μ > 0
         ∇u = x -> abs(ForwardDiff.derivative(x -> viscous_solution(x[1], t, μ, nodes, weights), x[1]))
+        sol = Optim.optimize(x -> -∇u(x), [x₀], LBFGS(); autodiff=:forward)
+        max_slope = -sol.minimum
+        return sol.minimizer[1], max_slope
     else
         ∇u = x -> abs(ForwardDiff.derivative(x -> inviscid_solution(y -> 1 / (1 + y^2), x[1], t), x[1]))
+        sol = Optim.optimize(x -> -∇u(x), [x₀], LBFGS(); autodiff=:finite)
+        max_slope = -sol.minimum
+        return sol.minimizer[1], max_slope
     end
-    sol = Optim.optimize(x -> -∇u(x), [x₀], LBFGS(); autodiff=:forward)
-    max_slope = -sol.minimum
-    return sol.minimizer[1], max_slope
 end
 function maximum_slope(t::AbstractVector, μ::AbstractVector)
     num_nodes = 250
