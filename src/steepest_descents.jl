@@ -22,11 +22,11 @@ function cubic_discriminant(x, t)
 end
 
 """ 
-    CubicΔCaustic
+    cubic_caustic(x, t)
 
-Plots the values of `CubicΔ(x, t)` that correspond to `Δ = 0`, for a given `x`.
+Plots the values of `cubic_discriminant(x, t)` that correspond to `Δ = 0`, for a given `x`.
 """
-function CubicΔCaustic(x)
+function cubic_caustic(x)
     t₁ = 2x / 3 + 2x^3 / 27 - 2sqrt((x^2 - 3)^3) / 27
     t₂ = 2x / 3 + 2x^3 / 27 + 2sqrt((x^2 - 3)^3) / 27
     return t₁, t₂
