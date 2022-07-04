@@ -21,7 +21,7 @@ end
 function locate_pole(z₀, t, μ)
     D = z -> saddle_point_approximation_μ_split(z, t, μ)
     z = [real(z₀), imag(z₀)]
-    twopoint_lineSearch(D, z)
+    twopoint_linesearch(D, z)
     return complex(z...)
 end
 
