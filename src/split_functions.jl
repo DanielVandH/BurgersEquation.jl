@@ -5,7 +5,7 @@ Computes the denominator of the exact solution `u` to the viscous Burgers' equat
 with initial condition `u(x, 0) = 1/(1+x^2)` and splits it into real and imaginary parts.    
 """
 function complex_split_denominator(z, t, μ, nodes, weights, glnodes, glweights)
-    D = viscous_solution_Denominator(z..., t, μ, nodes, weights, glnodes, glweights)
+    D = viscous_solution_denominator(z..., t, μ, nodes, weights, glnodes, glweights)
     return [real(D), imag(D)]
 end
 
