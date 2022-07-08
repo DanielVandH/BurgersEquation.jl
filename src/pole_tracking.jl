@@ -74,10 +74,10 @@ end
     tracking_poles_exact(z, t, μ)
     tracking_poles_saddle(z::Vector{ComplexF64}, t::Vector{Float64}, μ::Vector{Float64})
     tracking_poles_exact(z::Vector{ComplexF64}, t::Vector{Float64}, μ::Vector{Float64})
-    tracking_poles_exact(μ::AbstractVector{Float64}, z₀::ComplexF64; t_max=10.0, t_min=1e-6)
-    tracking_poles_Φ₀(μ, z₀; Δμ = 1e-5, μ_max = 1.0)
+    tracking_poles_exact(z₀::ComplexF64, μ::AbstractVector{Float64}; t_max=10.0, t_min=1e-6)
+    tracking_poles_Φ₀(z₀, μ; Δμ = 1e-5, μ_max = 1.0)
     tracking_poles_Ψ(z₀, μ)
-    tracking_poles_aaa(μ::Float64, z₀::ComplexF64; t_max=10.0, t_min=1e-6, L=30, xN=2000)
+    tracking_poles_aaa(z₀::ComplexF64, μ::Float64; t_max=10.0, t_min=1e-6, L=30, xN=2000)
 
 Tracks the closest pole to the real line in the complex plane for the exact solution `u` to 
 Burgers' equation with initial condition `u(x, 0) = 1/(1+x^2)`, using the saddle point approximation or the exact
@@ -169,7 +169,7 @@ end
     end
     return t_vals, pole_locs
 end
-@doc (@doc tracking_poles) function tracking_poles_exact(μ::AbstractVector{Float64}, z₀::ComplexF64; t_max=10.0, t_min=1e-6)
+@doc (@doc tracking_poles) function tracking_poles_exact(z₀::ComplexF64, μ::AbstractVector{Float64}; t_max=10.0, t_min=1e-6)
     # Setup
     N = 1001
     Δt = (t_max - t_min) / (N - 1)
@@ -218,7 +218,7 @@ end
     end
     return t_vals, pole_locs
 end
-@doc (@doc tracking_poles) function tracking_poles_Φ₀(μ, z₀; Δμ=1e-5, μ_max=1.0, kwargs...)
+@doc (@doc tracking_poles) function tracking_poles_Φ₀(z₀, μ; Δμ=1e-5, μ_max=1.0, kwargs...)
     μ_vals = μ:Δμ:μ_max
     num_μ = length(μ_vals)
     pole_locs = Vector{ComplexF64}(zeros(num_μ))
@@ -250,7 +250,7 @@ end
     end
     return roots
 end
-@doc (@doc tracking_poles) function tracking_poles_aaa(μ::Float64, z₀::ComplexF64; t_max=10.0, t_min=1e-6, L=30, xN=2000)
+@doc (@doc tracking_poles) function tracking_poles_aaa(z₀::ComplexF64, μ::Float64; t_max=10.0, t_min=1e-6, L=30, xN=2000)
     ## Computes the solutions on the real line 
     M = 2500
     Δt = (t_max - t_min) / (M - 1)
