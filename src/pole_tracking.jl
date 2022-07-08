@@ -12,7 +12,11 @@ function locate_pole end
 function locate_pole(z₀, t, μ, nodes, weights, glnodes, glweights; newton=true, kwargs...)
     D = z -> complex_split_denominator(z, t, μ, nodes, weights, glnodes, glweights)
     z = [real(z₀), imag(z₀)]
-    newton ? newton_method(D, z; kwargs...) : twopoint_linesearch(D, z; kwargs...)
+    try
+        newton ? newton_method(D, z; kwargs...) : twopoint_linesearch(D, z; kwargs...)
+    catch
+        return NaN + im * NaN
+    end
     if all(isnan, z)
         return NaN + im * NaN
     end
@@ -35,7 +39,7 @@ function Φ₀_pole(z₀, μ; kwargs...)
     try
         U = z -> 1.0 ./ Φ₀_split(z, μ)
         z = [real(z₀), imag(z₀)]
-        Newton_Method(U, z; kwargs...)
+        newton_method(U, z; kwargs...)
         return complex(z...)
     catch
         return NaN + im * NaN
@@ -48,7 +52,7 @@ end
 Search for poles to the large-limit function `Ψ` by solving `coth(π/4μ) = erf(η/2√μ)`, 
 starting at `μ[end]` with initial guess `z₀`, and then backtracking in `μ`.
 """
-function Ψ_pole(μ, z₀)
+function Ψ_pole(z₀, μ)
     roots = zeros(ComplexF64, length(μ))
     F = η -> coth(π / (4μ[end])) - erf(η / (2sqrt(μ[end])))
     F′ = η -> -exp(-η^2 / (4μ[end])) / sqrt(μ[end] * π)
@@ -72,6 +76,7 @@ end
     tracking_poles_exact(z::Vector{ComplexF64}, t::Vector{Float64}, μ::Vector{Float64})
     tracking_poles_exact(μ::AbstractVector{Float64}, z₀::ComplexF64; t_max=10.0, t_min=1e-6)
     tracking_poles_Φ₀(μ, z₀; Δμ = 1e-5, μ_max = 1.0)
+    tracking_poles_Ψ(z₀, μ)
     tracking_poles_aaa(μ::Float64, z₀::ComplexF64; t_max=10.0, t_min=1e-6, L=30, xN=2000)
 
 Tracks the closest pole to the real line in the complex plane for the exact solution `u` to 
@@ -87,10 +92,13 @@ The argument `z₀` is an initial guess for the pole location at `t_max` and `μ
 The method for `Φ₀` does so for the similarity solution `Φ₀`, starting from an initial guess of the pole location `z₀` at `μ` and returning 
 the locations over `μ:Δμ:μ_max`.
 
+The method for `Ψ` does so for the large-time solution `Ψ`, starting from an initial guess of the pole location `z₀` at `μ` and returning 
+the locations over `μ[i]` in the order `i = length(μ), …, 1`.
+
 The AAA method tracks poles backwards in time using the AAA algorithm, starting at `t_max` and ending at `t_min`.
 The argument `z₀` is an initial guess for the pole location at `t_max` and `μ = μ[end]`.
 """
-function tracking_poles end 
+function tracking_poles end
 @doc (@doc tracking_poles) function tracking_poles_saddle(z, t, μ)
     # Setup
     N = 10000
@@ -226,6 +234,22 @@ end
     end
     return pole_locs, μ_vals
 end
+@doc (@doc tracking_poles) function tracking_poles_Ψ(z₀, μ)
+    roots = zeros(ComplexF64, length(μ))
+    F = η -> coth(π / (4μ[end])) - erf(η / (2sqrt(μ[end])))
+    F′ = η -> -exp(-η^2 / (4μ[end])) / sqrt(μ[end] * π)
+    roots[end] = newton_method(F, F′, z₀)
+    for j in (length(μ)-1):-1:1
+        F = η -> coth(π / (4μ[j])) - erf(η / (2sqrt(μ[j])))
+        F′ = η -> -exp(-η^2 / (4μ[j])) / sqrt(μ[j] * π)
+        try
+            roots[j] = newton_method(F, F′, roots[j+1])
+        catch
+            roots[j] = roots[j+1]
+        end
+    end
+    return roots
+end
 @doc (@doc tracking_poles) function tracking_poles_aaa(μ::Float64, z₀::ComplexF64; t_max=10.0, t_min=1e-6, L=30, xN=2000)
     ## Computes the solutions on the real line 
     M = 2500
@@ -254,7 +278,7 @@ end
         findall(cond₁ .|| cond₂ .|| cond₃ .|| cond₄)
     end
     postcleanup_fnc! = (pol, res, r) -> begin
-        cond₁ = @. abs(res) < 1e-4     
+        cond₁ = @. abs(res) < 1e-4
         ii = findall(cond₁)
         deleteat!(pol, ii)
         return nothing
