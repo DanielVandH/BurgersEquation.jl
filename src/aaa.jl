@@ -22,7 +22,7 @@ function viscous_solution_aaa(u, x, t, X, Y)
     return U
 end
 function viscous_solution_aaa(N, L, T, t, μ::Float64, X, Y)
-    u, x, t = Viscous_Solution_Finite_Diff(N, L, T, μ, t)
+    u, x, t = viscous_solution_finite_diff(N, L, T, μ, t)
     return viscous_solution_aaa(u, x, t, X, Y)
 end
 function viscous_solution_aaa(N, L, T, t, μ::Vector{Float64}, X, Y)
