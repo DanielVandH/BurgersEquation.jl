@@ -26,7 +26,7 @@ include("quadrature.jl");           export gauss_legendre_finite, gauss_legendre
 include("viscous.jl");              export viscous_solution
 include("plotting.jl");             export portrait!, landscape!, LINSPECER_12_J, LINSPECER_250_J
 include("similarity.jl");           export parabolicU, Φ₀
-include("large_time.jl");           export viscous_solution_large_time, viscous_solution_large_time_Ψ
+include("large_time.jl");           export viscous_solution_large_time, viscous_solution_large_time_Ψ, viscous_solution_large_time_Ψ_roots_θ, viscous_solution_large_time_Ψ_roots_ρ
 include("steepest_descents.jl");    export saddle_point_approximation_μ, cubic_caustic, cubic_discriminant, cubic_saddle_points
 include("split_functions.jl");      export complex_split_denominator, saddle_point_approximation_μ_split, Φ₀_split
 include("pole_tracking.jl");        export tracking_poles_exact, tracking_poles_saddle, locate_pole, tracking_poles_Φ₀, Φ₀_pole, tracking_poles_aaa, tracking_poles_Ψ
