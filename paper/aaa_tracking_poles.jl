@@ -27,8 +27,8 @@ end
 
 ## Plot 
 for (t, z) in zip(t_vals_aaa, pole_locs_aaa)
-    scatter!(____fig.content[1], real.(z), imag.(z), color=:green, linestyle=:dash, markersize=5)
-    scatter!(____fig.content[2], t, imag.(z), color=:green, linestyle=:dash, markersize=5)
+    scatter!(____fig.content[1], real.(z[1:25:end]), imag.(z[1:25:end]), color=:green, linestyle=:dash, markersize=5)
+    scatter!(____fig.content[2], t[1:25:end], imag.(z[1:25:end]), color=:green, linestyle=:dash, markersize=5)
 end
 
 legendentries = OrderedDict(L"$ $Exact" => LineElement(linestyle=nothing, linewidth=2.0, color=:blue),
