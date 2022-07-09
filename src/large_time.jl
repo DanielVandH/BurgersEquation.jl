@@ -34,12 +34,12 @@ end
     end
     sol
 end
-function viscous_solution_large_time(x, t::Float64, μ::Float64, t₀ = 0.0)
-    η = x/sqrt(μ*(t-t₀))
+function viscous_solution_large_time(x, t::Float64, μ::Float64, t₀=0.0)
+    η = x / sqrt(μ * (t - t₀))
     Ψ = viscous_solution_large_time_Ψ(η, μ)
-    return sqrt(μ/(t-t₀)) * Ψ
+    return sqrt(μ / (t - t₀)) * Ψ
 end
-function viscous_solution_large_time(x::AbstractVector{T}, t::AbstractVector{Float64}, μ::AbstractVector{Float64}, t₀ = 0.0) where {T<:Number}
+function viscous_solution_large_time(x::AbstractVector{T}, t::AbstractVector{Float64}, μ::AbstractVector{Float64}, t₀=0.0) where {T<:Number}
     vals = zeros(T, length(x), length(t), length(μ))
     for (k, μμ) in enumerate(μ)
         for (j, tt) in enumerate(t)
@@ -50,10 +50,10 @@ function viscous_solution_large_time(x::AbstractVector{T}, t::AbstractVector{Flo
     end
     return vals
 end
-function viscous_solution_large_time(x::AbstractVector{T}, t, μ::AbstractVector{Float64}, t₀ = 0.0) where {T<:Number}
+function viscous_solution_large_time(x::AbstractVector{T}, t, μ::AbstractVector{Float64}, t₀=0.0) where {T<:Number}
     viscous_solution_large_time(x, [t], μ, t₀)[:, 1, :]
 end
-function viscous_solution_large_time(x::AbstractVector{T}, y::AbstractVector{T}, t::AbstractVector{Float64}, μ::AbstractVector{Float64}, t₀ = 0.0) where {T<:Number}
+function viscous_solution_large_time(x::AbstractVector{T}, y::AbstractVector{T}, t::AbstractVector{Float64}, μ::AbstractVector{Float64}, t₀=0.0) where {T<:Number}
     vals = zeros(ComplexF64, length(x), length(y), length(t), length(μ))
     for (ℓ, μμ) in enumerate(μ)
         for (k, tt) in enumerate(t)
@@ -66,4 +66,51 @@ function viscous_solution_large_time(x::AbstractVector{T}, y::AbstractVector{T},
         end
     end
     return vals
+end
+
+function viscous_solution_large_time_Ψ_roots_θ(ρ::Float64, μ::Float64, quadrant)
+    γ = coth(π / (4μ))
+    if quadrant == 1
+        θ = π / 4 + 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1)))
+    elseif quadrant == 2
+        θ = 3π/4 - 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1 + 2)))
+    end
+    return ρ * exp(im * θ)
+end
+function viscous_solution_large_time_Ψ_roots_θ(ρ::AbstractVector, μ::AbstractVector, quadrant)
+    poles = zeros(ComplexF64, length(ρ), length(μ))
+    for (j, mm) in enumerate(μ)
+        for (i, p) in enumerate(ρ)
+            poles[i, j] = viscous_solution_large_time_Ψ_roots_θ(p, mm, quadrant)
+        end
+    end
+    poles
+end
+
+function viscous_solution_large_time_Ψ_roots_ρ(n::Int64, μ::Float64, quadrant)
+    γ = coth(π / (4μ))
+    if quadrant == 1
+        ρ²4μ⁻¹ = (2n + 3 / 4) * π - log(sqrt(2n)) * π * (γ - 1) / (4π * n)
+        ρ = sqrt(4μ * ρ²4μ⁻¹) 
+        θ = π / 4 + 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1)))
+    elseif quadrant == 2
+        ρ²4μ⁻¹ = (2n + 3 / 4) * π - log(sqrt(2n)) * π * (γ - 1 + 2) / (4π * n)
+        ρ = sqrt(4μ * ρ²4μ⁻¹) 
+        θ = 3π/4 - 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1 + 2)))
+    end
+    return ρ * exp(im*θ)
+end
+function viscous_solution_large_time_Ψ_roots_ρ(n::AbstractVector, μ::Float64, quadrant)
+    poles = zeros(ComplexF64, length(n))
+    for (i, nn) in enumerate(n)
+        poles[i] = viscous_solution_large_time_Ψ_roots_ρ(nn, μ, quadrant)
+    end
+    poles
+end
+function viscous_solution_large_time_Ψ_roots_ρ(n::AbstractVector, μ::AbstractVector, quadrant)
+    poles = zeros(ComplexF64, length(n), length(μ))
+    for (j, mm) in enumerate(μ)
+        poles[:, j] .= viscous_solution_large_time_Ψ_roots_ρ(n, mm, quadrant)
+    end
+    poles
 end
