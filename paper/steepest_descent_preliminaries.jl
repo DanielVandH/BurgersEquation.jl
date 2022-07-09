@@ -86,5 +86,5 @@ for (k, cl) in enumerate(levels(C))
     end
 end
 colgap!(ga, 90)
-save("$FIGURES/contour_surface_plot.$EXTENSION")
+save("$FIGURES/contour_surface_plot.$EXTENSION", fig)
 
