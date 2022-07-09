@@ -255,7 +255,7 @@ end
     M = 2500
     Δt = (t_max - t_min) / (M - 1)
     t_vals = t_min:Δt:t_max
-    U, X, _ = Viscous_Solution_Finite_Diff(xN, L, t_max, μ, t_vals)
+    U, X, _ = viscous_solution_finite_diff(xN, L, t_max, μ, t_vals)
     ## Compare using chebpts (closest points to, at least)
     Xc = 5chebpts(250)
     idx = Vector{Int64}(zeros(250))
