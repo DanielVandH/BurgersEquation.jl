@@ -20,7 +20,7 @@ lines!(ax, x, exvals[:, 3, 1], color=:darkgreen, linestyle=:dash, linewidth=3)
 lines!(ax, x, exvals[:, 4, 1], color=:magenta, linestyle=:dash, linewidth=3)
 
 ax = Axis(fig[2, 1], xlabel=L"x", ylabel=L"u(x,t)",
-    title=L"(b): $\mu = 1$", titlealign=:left, width=700, height=700,
+    title=L"(d): $\mu = 1$", titlealign=:left, width=700, height=700,
     xticks=([-50, -25, 0, 25, 50], [L"-50", L"-25", L"0", L"25", L"50"]),
     yticks=([0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3], [L"0", L"0.05", L"0.1", L"0.15", L"0.2", L"0.25", L"0.3"]))
 lines!(ax, x, vals[:, 1, 2], color=:blue, linewidth=3)
@@ -54,7 +54,7 @@ portrait!(fig, x, y, vals[:, :, 1], 1, 2, width=700, height=700, nist=NIST,
         [L"-30", "-15", L"0", L"15", L"30"]),
     yticks=([-30, -15, 0, 15, 30],
         [L"-30", "-15", L"0", L"15", L"30"]),
-    title=L"(c): $\mu = 0.1$", titlealign=:left)
+    title=L"(b): $\mu = 0.1$", titlealign=:left)
 #abline!(fig.content[end], 0, 1, color=:black)
 #abline!(fig.content[end], 0, -1, color=:black)
 lines!(fig.content[end], real(poles[:, 1]), imag(poles[:, 1]), color=:black, linewidth=6)
@@ -69,7 +69,7 @@ portrait!(fig, x, y, vals[:, :, 2], 2, 2, width=700, height=700, nist=NIST,
         [L"-15", L"-10", L"-5", L"0", L"5", L"10", L"15"]),
     yticks=([-15, -10, -5, 0, 5, 10, 15],
         [L"-15", L"-10", L"-5", L"0", L"5", L"10", L"15"]),
-    title=L"(d): $\mu = 1$", titlealign=:left)
+    title=L"(e): $\mu = 1$", titlealign=:left)
 #abline!(fig.content[end], 0, 1, color=:black)
 #abline!(fig.content[end], 0, -1, color=:black)
 lines!(fig.content[end], real(poles[:, 2]), imag(poles[:, 2]), color=:black, linewidth=6)
@@ -85,7 +85,7 @@ y = -7:0.01:7 |> collect
 vals = viscous_solution_large_time_Ψ(x, y, μ)
 landscape!(fig, x, y, vals[:, :, 1], 1, 5, width=700, height=700, nist=NIST,
     xlabel=L"\mathrm{Re}(\eta)", ylabel=L"\mathrm{Im}(\eta)", zlabel=L"|\Psi(\eta)|",
-    title=L"(e): $\mu = 0.1$", titlealign=:left, zlims=(0, 20),
+    title=L"(c): $\mu = 0.1$", titlealign=:left, zlims=(0, 20),
     xticks=([-5, 0, 5], [L"-5", L"0", L"5"]),
     yticks=([-5, 0, 5], [L"-5", L"0", L"5"]),
     zticks=([0, 5, 10, 15, 20], [L"0", L"5", L"10", L"15", L"20"]))
