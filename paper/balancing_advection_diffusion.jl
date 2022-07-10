@@ -31,13 +31,12 @@ t_vals, pole_locs = tracking_poles_exact(z₀, μ; t_max=t_max, t_min=t_min)
 
 ## Plots 
 # Real line
-slopes[284:end, 1] .= NaN
 fig = Figure(fontsize=26, resolution=(800, 400))
 ax = Axis(fig[1, 1], xlabel=L"t", ylabel=L"Maximum$ $ absolute slope", title=L"(a):$ $ Slope analysis", titlealign=:left,
     xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),
     yticks=([0.0, 2.0, 4.0, 6.0, 8.0], [L"0", L"2", L"4", L"6", L"8"]))
 colors = cgrad(LINSPECER_12_J, μ[μ_idx]; categorical=false)
-lines!(ax, t[1:5:end], slopes[1:5:end, 1], color=colors[1], linestyle=:dash)
+lines!(ax, t[1:5:283], slopes[1:5:283, 1], color=colors[1], linestyle=:dash)
 [lines!(ax, t, slopes[:, j], color=colors[i+1]) for (i, j) in enumerate(μ_idx[2:end])]
 scatter!(ax, t[pt_idx], vals[pt_idx2], color=:red, markersize=4)
 xlims!(ax, 0, t_max)

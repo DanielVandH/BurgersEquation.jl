@@ -25,7 +25,7 @@ function inviscid_solution(f, x::AbstractVector, t::Number; Δt=t / 100)
         t_vals = Δt:Δt:t
         for τ in t_vals
             F = u -> u .- f.(x .- u * τ)
-            newton_method(F, u)
+            newton_method(F, u; maxIters = 100)
         end
     end
     return u
