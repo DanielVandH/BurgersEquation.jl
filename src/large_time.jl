@@ -12,7 +12,7 @@ Function for computing the large-time limit of the exact solution to the viscous
 """
 function viscous_solution_large_time end
 @doc (@doc viscous_solution_large_time) function viscous_solution_large_time_Ψ(η, μ)
-    2sqrt(μ) / sqrt(π) * exp(-η^2 / (4μ)) / (coth(π / (4μ)) - erf(η / (2sqrt(μ))))
+    2 / sqrt(π) * exp(-η^2 / 4) / (coth(π / (4μ)) - erf(η / 2))
 end
 @doc (@doc viscous_solution_large_time) function viscous_solution_large_time_Ψ(x::AbstractVector, y::AbstractVector, μ::AbstractVector)
     sol = zeros(ComplexF64, length(x), length(y), length(μ))
@@ -35,9 +35,9 @@ end
     sol
 end
 function viscous_solution_large_time(x, t::Float64, μ::Float64, t₀=0.0)
-    η = x / sqrt(t - t₀)
+    η = x / sqrt(μ * (t - t₀))
     Ψ = viscous_solution_large_time_Ψ(η, μ)
-    return 1/sqrt(t - t₀) * Ψ
+    return sqrt(μ / (t - t₀)) * Ψ
 end
 function viscous_solution_large_time(x::AbstractVector{T}, t::AbstractVector{Float64}, μ::AbstractVector{Float64}, t₀=0.0) where {T<:Number}
     vals = zeros(T, length(x), length(t), length(μ))
