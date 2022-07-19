@@ -39,10 +39,10 @@ legendentries = OrderedDict(L"10" => LineElement(linestyle=nothing, linewidth=2.
 Legend(fig[1:2, 0], [values(legendentries)...], [keys(legendentries)...], L"$t$", orientation=:vertical, labelsize=36, titlesize=36, titleposition=:top)
 
 x = -30:0.01:30 |> collect
-y = -30:0.01:30 |> collect
+y = 0:0.01:30 |> collect
 μ = [0.1, 1.0]
 vals = viscous_solution_large_time_Ψ(x, y, μ)
-ρ = 0.01:0.01:88
+ρ = 1:0.01:88
 n = 1:10000
 poles = viscous_solution_large_time_Ψ_roots_θ(ρ, μ, 1)
 poles_n = viscous_solution_large_time_Ψ_roots_ρ(n, μ, 1)
@@ -63,6 +63,8 @@ lines!(fig.content[end], real(poles_2[:, 1]), imag(poles_2[:, 1]), color=:black,
 scatter!(fig.content[end], real(poles_n_2[:, 1]), imag(poles_n_2[:, 1]), color=:white, markersize=8)
 xlims!(fig.content[end], x[1], x[end])
 ylims!(fig.content[end], y[1], y[end])
+xlims!(fig.content[end], -15, 15)
+ylims!(fig.content[end], 0, 15)
 portrait!(fig, x, y, vals[:, :, 2], 2, 2, width=700, height=700, nist=NIST,
     xlabel=L"\mathrm{Re}(\eta)", ylabel=L"\mathrm{Im}(\eta)",
     xticks=([-15, -10, -5, 0, 5, 10, 15],
@@ -77,24 +79,27 @@ scatter!(fig.content[end], real(poles_n[:, 2]), imag(poles_n[:, 2]), color=:whit
 lines!(fig.content[end], real(poles_2[:, 2]), imag(poles_2[:, 2]), color=:black, linewidth=6)
 scatter!(fig.content[end], real(poles_n_2[:, 2]), imag(poles_n_2[:, 2]), color=:white, markersize=16)
 xlims!(fig.content[end], -15, 15)
-ylims!(fig.content[end], -15, 15)
+ylims!(fig.content[end], 0, 15)
 
-x = -7:0.01:7 |> collect
-y = -7:0.01:7 |> collect
+x = -15:0.1:15 |> collect
+y = 0:0.1:15 |> collect
 μ = [0.1, 1.0]
 vals = viscous_solution_large_time_Ψ(x, y, μ)
+vals2 = viscous_solution_large_time_Ψ(x, μ)
 landscape!(fig, x, y, vals[:, :, 1], 1, 5, width=700, height=700, nist=NIST,
     xlabel=L"\mathrm{Re}(\eta)", ylabel=L"\mathrm{Im}(\eta)", zlabel=L"|\Psi(\eta)|",
-    title=L"(c): $\mu = 0.1$", titlealign=:left, zlims=(0, 20),
-    xticks=([-5, 0, 5], [L"-5", L"0", L"5"]),
-    yticks=([-5, 0, 5], [L"-5", L"0", L"5"]),
+    title=L"(c): $\mu = 0.1$", titlealign=:left, zlims=(0, 10),
+    xticks=([-15, 0, 15], [L"-15", L"0", L"15"]),
+    yticks=([-15, 0, 15], [L"-15", L"0", L"15"]),
     zticks=([0, 5, 10, 15, 20], [L"0", L"5", L"10", L"15", L"20"]))
+lines!(fig.content[end], x, zeros(length(x)), vals2[:, 1], color=:black, linewidth=5)
 landscape!(fig, x, y, vals[:, :, 2], 2, 5, width=700, height=700, nist=NIST,
     xlabel=L"\mathrm{Re}(\eta)", ylabel=L"\mathrm{Im}(\eta)", zlabel=L"\Psi(\eta)|",
-    title=L"(f): $\mu = 1$", titlealign=:left, zlims=(0, 20),
-    xticks=([-5, 0, 5], [L"-5", L"0", L"5"]),
-    yticks=([-5, 0, 5], [L"-5", L"0", L"5"]),
+    title=L"(f): $\mu = 1$", titlealign=:left, zlims=(0, 10),
+    xticks=([-15, 0, 15], [L"-15", L"0", L"15"]),
+    yticks=([-15, 0, 15], [L"-15", L"0", L"15"]),
     zticks=([0, 5, 10, 15, 20], [L"0", L"5", L"10", L"15", L"20"]))
+lines!(fig.content[end], x, zeros(length(x)), vals2[:, 2], color=:black, linewidth=5)
 resize_to_layout!(fig)
 
 save("$FIGURES/large_time_solution_plots.$EXTENSION", fig)
