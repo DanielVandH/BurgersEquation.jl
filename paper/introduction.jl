@@ -1,11 +1,11 @@
-x = -25:0.1:25
-t = [0.0, tₛ, 5.0, 10.0, 100.0]
+x = -12:0.1:12
+t = [0.0, tₛ, 5.0, 10.0]
 μ = [0.1, 1.0]
 t₀ = 25.26
 
 u_inviscid = inviscid_solution(x -> 1 / (1 + x^2), x, tₛ)
 u_viscous = viscous_solution(x, t, μ)
-u_large = viscous_solution_large_time(x, t[end], μ, t₀)
+#u_large = viscous_solution_large_time(x, t[end], μ, t₀)
 
 fig = Figure(fontsize=33, resolution=(800, 400))
 ab = ['a', 'b']
@@ -15,11 +15,11 @@ for k in 1:length(μ)
         width=800, height=400,
         xticks=([-20, -10, 0, 10, 20], [L"-20", L"-10", L"0", L"10", L"20"]),
         yticks=([0, 0.25, 0.50, 0.75, 1.00], [L"0", L"0.25", L"0.5", L"0.75", L"1"]))
-    lines!(ax, x, u_inviscid, color=:red, linestyle=:dash, linewidth=2.3)
+    k == 1 && lines!(ax, x, u_inviscid, color=:red, linestyle=:dash, linewidth=2.3)
     for j in 1:length(t)
         lines!(ax, x, u_viscous[:, j, k], color=:black, linestyle=:solid, linewidth=2.3)
     end
-    lines!(ax, x, u_large[:, k], color=:blue, linestyle=:dash, linewidth=2.3)
+    #lines!(ax, x, u_large[:, k], color=:blue, linestyle=:dash, linewidth=2.3)
 end
 resize_to_layout!(fig)
 
