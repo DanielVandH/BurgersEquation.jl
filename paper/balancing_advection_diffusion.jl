@@ -62,6 +62,7 @@ minima_p = Vector{Float64}([])
 plot_t = Vector{Float64}([])
 plot_p = Vector{Float64}([])
 break_i = Int64[]
+μ_dt = Float64[]
 for i in 2:length(μ)
     a, b = findminima(imag(pole_locs[i, 2:end]))
     try
@@ -76,6 +77,7 @@ for i in 2:length(μ)
         if i ∈ μ_idx
             push!(plot_t, t[a])
             push!(plot_p, b)
+            push!(μ_dt, μ[i])
         end
         if a == 1 || a == length(t)
             push!(break_i, i)
