@@ -33,6 +33,6 @@ end
 
 legendentries = OrderedDict(L"$ $Exact" => LineElement(linestyle=nothing, linewidth=2.0, color=:blue),
     L"$ $Saddle Point" => LineElement(linestyle=:dash, linewidth=2.0, color=:red),
-    L"$ $AAA" => LineElement(linestyle=:dash, linewidth=2.0, color=:green))
+    L"$ $AAA" => MarkerElement(markersize=5, color=:green))
 axislegend(ax2, [values(legendentries)...], [keys(legendentries)...], position=:lt)
 resize_to_layout!(____fig)
