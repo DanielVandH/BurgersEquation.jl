@@ -41,3 +41,21 @@ Colorbar(fig[1, 3], limits=(0.0, 25.0), colormap=colors, label=L"\mu", vertical=
 resize_to_layout!(fig)
 
 save("$FIGURES/large_time_solution_plots_all_roots.$EXTENSION", fig)
+
+###########################################
+## Closest pole
+########################################### 
+
+x = LinRange(-5, 5, 500)
+y = LinRange(-5, 5, 500)
+μ = [0.1, 1.0]
+vals = viscous_solution_large_time_Ψ(x, y, μ)
+
+fig = Figure()
+portrait!(fig, x, y, vals[:, :, 1], 1, 1; width=400,height=400,aspect=1)
+scatter!(fig.content[end], [2.07,2.07,-4.14],[-0.9238,0.9238,0.0], color=:black, markersize=13)
+portrait!(fig, x, y, vals[:, :, 2], 1, 2; width=400,height=400,aspect=1)
+scatter!(fig.content[end], [2.201,2.201,-4.401],[1.59,-1.59,0.0], color=:black, markersize=13)
+resize_to_layout!(fig)
+fig
+save("$FIGURES/large_time_solution_plots_all_roots_closest_cubic.$EXTENSION", fig)
