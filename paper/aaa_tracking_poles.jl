@@ -35,6 +35,7 @@ for (t, z) in zip(t_vals_aaa, pole_locs_aaa)
 end
 =#
 
+# The constants below are obtained in the MATLAB script "burger_pde15s.m".
 const T_AAA = [0
     0.00400000000000000
     0.00800000000000000
@@ -1039,14 +1040,23 @@ const POLE_AAA = [1.20814311296648e-14+1.00000000000005im 1.20814311296648e-14+1
     2.06883621050923+0.482287109481066im 2.12456110605664+1.12225272288116im 2.30977987050607+2.70953565904641im
     2.07140000000000+0.482100000000000im 2.12700000000000+1.22500000000000im 2.31230000000000+2.71130000000000im]
 
-skip = 7
+skip = 1
 for j in 1:3
-    scatter!(____fig.content[1], real.(POLE_AAA[1:skip:end, j]), imag.(POLE_AAA[1:skip:end, j]), color=:green, markersize=5)
-    scatter!(____fig.content[2], T_AAA[1:skip:end], imag.(POLE_AAA[1:skip:end, j]), markersize=5, color=:green)
+    if j > 2
+        global ____a3
+    end
+    ____a3 = lines!(____fig.content[1], real.(POLE_AAA[1:skip:end, j]), imag.(POLE_AAA[1:skip:end, j]),
+        marker=:rect, color=:green, markersize=7, label=L"$ $AAA", linewidth=3, linestyle=:dashdot)
+    lines!(____fig.content[2], T_AAA[1:skip:end], imag.(POLE_AAA[1:skip:end, j]),
+        markersize=7, marker=:rect, color=:green, linewidth=3, linestyle=:dashdot)
 end
 
+#=
 legendentries = OrderedDict(L"$ $Exact" => LineElement(linestyle=nothing, linewidth=2.0, color=:blue),
     L"$ $Saddle Point" => LineElement(linestyle=:dash, linewidth=2.0, color=:red),
     L"$ $AAA" => MarkerElement(marker='.', markersize=21, color=:green, points=Point2f[(0.2, 0.5), (0.5, 0.5), (0.8, 0.5)]))
 axislegend(ax2, [values(legendentries)...], [keys(legendentries)...], position=:lt)
+=#
+axislegend(ax2, [____a1, ____a2, ____a3], [L"$ $Exact", L"$ $Saddle Point", L"$ $AAA"], position=:lt)
 resize_to_layout!(____fig)
+xlims!(ax1, 0, 2)

@@ -20,13 +20,23 @@ ax2 = Axis(____fig[1, 2], xlabel=L"t", ylabel=L"\mathrm{Im}(z)",
     xticks=([0.0, 0.5, 1.0, 1.5, 2.0], [L"0", L"0.5", L"1", L"1.5", L"2"]),
     yticks=([0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0], [L"0", L"0.5", L"1", L"1.5", L"2", L"2.5", L"3"]),
     width=500, height=400)
-for (t, z) in tuple.(t_vals_exact, pole_locs_exact)
-    lines!(ax1, real.(z), imag.(z), color=:blue, linewidth=3)
-    lines!(ax2, t, imag.(z), color=:blue, linewidth=3)
+for (t, z) in zip(t_vals_exact, pole_locs_exact)
+    if z == pole_locs_exact[3]
+        global ____a1
+    end
+    ____a1 = lines!(ax1, real.(z), imag.(z), color=:blue, linewidth=3, linestyle=:solid,
+        label=L"$ $Exact", marker=:star4, markersize=7)
+    lines!(ax2, t, imag.(z), color=:blue, linewidth=3,
+        marker=:star4, markersize=7, linestyle=:solid)
 end
-for (t, z) in tuple.(t_vals_saddle, pole_locs_saddle)
-    lines!(ax1, real.(z), imag.(z), color=:red, linestyle=:dash, linewidth=3)
-    lines!(ax2, t, imag.(z), color=:red, linestyle=:dash, linewidth=3)
+for (t, z) in zip(t_vals_saddle, pole_locs_saddle)
+    if z == pole_locs_saddle[3]
+        global ____a2
+    end
+    ____a2 = lines!(ax1, real.(z), imag.(z), color=:red, linestyle=:dash,
+        linewidth=3, label=L"$ $Saddle Point", marker=:rtriangle, markersize=7)
+    lines!(ax2, t, imag.(z), color=:red, linewidth=3, linestyle=:dash,
+        marker=:rtriangle, markersize=7)
 end
 ylims!(ax1, 0, 3)
 ylims!(ax2, 0, 3)
