@@ -71,9 +71,9 @@ end
 function viscous_solution_large_time_Ψ_roots_θ(ρ::Float64, μ::Float64, quadrant)
     γ = coth(π / (4μ))
     if quadrant == 1
-        θ = π / 4 + 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1)))
+        θ = π/4 + 2/ρ^2 * (log(ρ) + log(sqrt(π)*(γ-1)/2))
     elseif quadrant == 2
-        θ = 3π/4 - 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1 + 2)))
+        θ = 3π/4 - 2/ρ² * (log(ρ) + log(sqrt(π)*(γ+1)/2))
     end
     return ρ * exp(im * θ)
 end
