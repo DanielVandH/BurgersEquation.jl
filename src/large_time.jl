@@ -73,7 +73,7 @@ function viscous_solution_large_time_Ψ_roots_θ(ρ::Float64, μ::Float64, quadr
     if quadrant == 1
         θ = π/4 + 2/ρ^2 * (log(ρ) + log(sqrt(π)*(γ-1)/2))
     elseif quadrant == 2
-        θ = 3π/4 - 2/ρ² * (log(ρ) + log(sqrt(π)*(γ+1)/2))
+        θ = 3π/4 - 2/ρ^2 * (log(ρ) + log(sqrt(π)*(γ+1)/2))
     end
     return ρ * exp(im * θ)
 end
@@ -92,11 +92,11 @@ function viscous_solution_large_time_Ψ_roots_ρ(n::Int64, μ::Float64, quadrant
     if quadrant == 1
         ρ² = (8n + 3)*π - (log(2n) + 2log(π*(γ-1)))/(2n*π)
         ρ = sqrt(ρ²)
-        return viscous_solution_large_time_Ψ_roots_θ(ρ, μ, 1)
+        return viscous_solution_large_time_Ψ_roots_θ(ρ, μ, quadrant)
     elseif quadrant == 2
         ρ² = (8n + 3)*π - (log(2n) + 2log(π*(γ+1)))/(2n*π)
         ρ = sqrt(ρ²)
-        return viscous_solution_large_time_Ψ_roots_θ(ρ, μ, 1)
+        return viscous_solution_large_time_Ψ_roots_θ(ρ, μ, quadrant)
     end
     throw(ArgumentError("Invalid quadrant."))
 end
