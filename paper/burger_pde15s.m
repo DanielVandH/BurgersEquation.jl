@@ -33,10 +33,3 @@ for k = 1:3
         aaa_poles(j, k) = poles(idx);
     end
 end
-
-%% Make sure the results are fine 
-figure
-plot(t, imag(aaa_poles(:, 1)));
-hold on
-plot(t, imag(aaa_poles(:, 2)));
-plot(t, imag(aaa_poles(:, 3)));

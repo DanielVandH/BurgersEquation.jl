@@ -1,3 +1,5 @@
+# Below is one way to make these plots in Julia, but we just use the MATLAB results since they seem to be more accurate. 
+#=
 L = 30
 T = 2.0
 N = 1000
@@ -6,6 +8,9 @@ t = [0.1, 0.5, 1.0, 8sqrt(3) / 9]
 X = -4:0.01:4
 Y = 0:0.01:4
 U = viscous_solution_aaa(N, L, T, t, μ, X, Y)
+=#
+
+# The constants below are obtained in the MATLAB script "burger_aaa.m".
 
 time_labels = ["0.1", "0.5", "1", "t_s"]
 plot_layout = [[(1, 1), (1, 2)], [(1, 3), (1, 4)], [(2, 1), (2, 2)], [(2, 3), (2, 4)]]
