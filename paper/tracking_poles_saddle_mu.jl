@@ -38,10 +38,6 @@ for (t, z) in zip(t_vals_saddle, pole_locs_saddle)
     lines!(ax2, t, imag.(z), color=:red, linewidth=3, linestyle=:dash,
         marker=:rtriangle, markersize=7)
 end
-ylims!(ax1, 0, 3)
-ylims!(ax2, 0, 3)
-xlims!(ax1, 0, 2.5)
-xlims!(ax2, 0, 2)
 text!(ax1, L"\mu = 0.5", position=(1.0, 1.86), rotation=0.45, color=:black, textsize=36.4)
 text!(ax1, L"\mu = 0.1468", position=(1.0, 1.1), rotation=0.0, color=:black, textsize=36.4)
 text!(ax1, L"\mu = 0.05", position=(0.5, 0.45), rotation=-0.20, color=:black, textsize=36.4)
@@ -50,6 +46,10 @@ text!(ax2, L"\mu = 0.1468", position=(1.0, 1.1), rotation=0.0, color=:black, tex
 text!(ax2, L"\mu = 0.05", position=(0.5, 0.4), rotation=-0.20, color=:black, textsize=36.4)
 
 include("aaa_tracking_poles.jl")
+xlims!(ax1, 0, 2.5)
+ylims!(ax1, 0, 3.0)
+xlims!(ax2, 0, 2)
+ylims!(ax2, 0, 3.0)
 
 save("$FIGURES/tracking_pole_small_mu.$EXTENSION", ____fig)
 
