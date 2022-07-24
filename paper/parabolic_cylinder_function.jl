@@ -34,3 +34,4 @@ end
 resize_to_layout!(fig)
 
 save("$FIGURES/similarity_solutions.$EXTENSION", fig)
+
