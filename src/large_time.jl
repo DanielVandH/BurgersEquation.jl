@@ -90,15 +90,15 @@ end
 function viscous_solution_large_time_Ψ_roots_ρ(n::Int64, μ::Float64, quadrant)
     γ = coth(π / (4μ))
     if quadrant == 1
-        ρ²4μ⁻¹ = (2n + 3 / 4) * π - log(sqrt(2n)) * π * (γ - 1) / (4π * n)
-        ρ = sqrt(4μ * ρ²4μ⁻¹) 
-        θ = π / 4 + 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1)))
+        ρ² = (8n + 3)*π - (log(2n) + 2log(π*(γ-1)))/(2n*π)
+        ρ = sqrt(ρ²)
+        return viscous_solution_large_time_Ψ_roots_θ(ρ, μ, 1)
     elseif quadrant == 2
-        ρ²4μ⁻¹ = (2n + 3 / 4) * π - log(sqrt(2n)) * π * (γ - 1 + 2) / (4π * n)
-        ρ = sqrt(4μ * ρ²4μ⁻¹) 
-        θ = 3π/4 - 2μ / ρ^2 * (log(ρ) + log(1 / 2 * sqrt(π / μ) * (γ - 1 + 2)))
+        ρ² = (8n + 3)*π - (log(2n) + 2log(π*(γ+1)))/(2n*π)
+        ρ = sqrt(ρ²)
+        return viscous_solution_large_time_Ψ_roots_θ(ρ, μ, 1)
     end
-    return ρ * exp(im*θ)
+    throw(ArgumentError("Invalid quadrant."))
 end
 function viscous_solution_large_time_Ψ_roots_ρ(n::AbstractVector, μ::Float64, quadrant)
     poles = zeros(ComplexF64, length(n))
