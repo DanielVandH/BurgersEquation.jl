@@ -43,7 +43,7 @@ The two main folders in the repository are `paper` and `src`.
 
 - `/src/`
 
-  This folder contains all the `using` and `include` commands that define the functions that do all the heavy lifting in the paper. Most of the functions used are documented with docstrings. For example, if you want clearer documentation on our functions for plotting portraits,
+  This folder contains all the `using` and `include` commands that define the functions that do all the heavy lifting in the paper. Most of the functions used are documented with docstrings. For example, if you want clearer documentation on our functions for plotting portraits, you can write
   ```
   julia> ?portrait!
   search: portrait!
@@ -83,7 +83,7 @@ The two main folders in the repository are `paper` and `src`.
 
   There is no output, but fig is updated with the figure in fig[i, j].
   ```
-  which will print out the documentation. A full list of functions exported from the package (many are not exported, simply performing intermediate operations) can be seen using `names`:
+  A full list of functions exported from the package (many are not exported, simply performing intermediate operations) can be seen using `names`:
   ```
   julia> names(BurgersEquation)
 40-element Vector{Symbol}:
