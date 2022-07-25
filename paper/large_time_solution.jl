@@ -72,8 +72,6 @@ portrait!(fig, x, y, vals[:, :, 2], 2, 2, width=600, height=600, nist=NIST,
     yticks=([0, 4, 8, 12, 16, 20, 24],
         [L"0", L"4", L"8", L"12", L"16", L"20", L"24"]),
     title=L"(e): $\mu = 1$", titlealign=:left,aspect=1)
-#abline!(fig.content[end], 0, 1, color=:black)
-#abline!(fig.content[end], 0, -1, color=:black)
 lines!(fig.content[end], real(poles[:, 2]), imag(poles[:, 2]), color=:black, linewidth=6)
 scatter!(fig.content[end], real(poles_n[:, 2]), imag(poles_n[:, 2]), color=:white, markersize=16)
 lines!(fig.content[end], real(poles_2[:, 2]), imag(poles_2[:, 2]), color=:black, linewidth=6)
@@ -104,5 +102,4 @@ resize_to_layout!(fig)
 
 save("$FIGURES/large_time_solution_plots.$EXTENSION", fig)
 
-fig
 
