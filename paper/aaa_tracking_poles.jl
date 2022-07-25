@@ -43,7 +43,7 @@ for j in 1:3
     end
     ____a3 = scatter!(____fig.content[1], real.(AAA_POLES[1:skip:end-1, j]), imag.(AAA_POLES[1:skip:end-1, j]),
         color=:green, markersize=8, label=L"$ $AAA", linewidth=3, linestyle=:dashdot)
-    scatter!(____fig.content[2], T_AAA_POLES[1:skip:end-1], imag.(T_AAA_POLES[1:skip:end-1, j]),
+    scatter!(____fig.content[2], T_AAA_POLES[1:skip:end-1], imag.(AAA_POLES[1:skip:end-1, j]),
         markersize=8, color=:green, linewidth=3, linestyle=:dashdot)
 end
 
