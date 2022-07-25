@@ -6,7 +6,7 @@ function fix_i(filename)
 fid = fopen(filename);
 f = fread(fid, '*char');
 fclose(fid);
-f = strrep(f', 'i', 'im')';
+f = strrep(f', 'i', 'im')'; % function only works on row vectors (...), hence the transpose.
 fid = fopen(filename, 'w');
 fprintf(fid, '%s', f);
 fclose(fid);
