@@ -5,7 +5,6 @@ t₀ = 25.26
 
 u_inviscid = inviscid_solution(x -> 1 / (1 + x^2), x, tₛ)
 u_viscous = viscous_solution(x, t, μ)
-#u_large = viscous_solution_large_time(x, t[end], μ, t₀)
 
 fig = Figure(fontsize=33, resolution=(800, 400))
 ab = ['a', 'b']
@@ -19,7 +18,6 @@ for k in 1:length(μ)
     for j in 1:length(t)
         lines!(ax, x, u_viscous[:, j, k], color=:black, linestyle=:solid, linewidth=2.3)
     end
-    #lines!(ax, x, u_large[:, k], color=:blue, linestyle=:dash, linewidth=2.3)
 end
 resize_to_layout!(fig)
 
