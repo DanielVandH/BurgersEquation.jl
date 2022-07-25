@@ -43,12 +43,69 @@ The two main folders in the repository are `paper` and `src`.
 
 - `/src/`
 
-  This folder contains all the `using` and `include` commands that define the functions that do all the heavy lifting in the paper. Most of the functions used are documented with docstrings. For example, if you want clearer documentation on our functions for plotting portraits and landscapes, you can type in the REPL
+  This folder contains all the `using` and `include` commands that define the functions that do all the heavy lifting in the paper. Most of the functions used are documented with docstrings. For example, if you want clearer documentation on our functions for plotting portraits,
   ```
   julia> ?portrait!
-  julia> ?landscape!
+  search: portrait!
+
+  portrait!(fig, x, y, Z, i, j; xlabel=L"x", ylabel=L"y", nist=true, pltkwargs...)
+
+  Plots the phase portrait for the data in Z, defined over a structured grid.
+
+  Arguments
+  ≡≡≡≡≡≡≡≡≡≡≡
+
+    •  fig: A Makie figure object.
+
+    •  x: The real part of the points that Z is computed at.
+
+    •  y: The imaginary part of the points that Z is computed at.
+
+    •  Z: The matrix of values to plot, defined such that Z[i, j] is at (x[i], y[j]).
+
+    •  i: The row number to create the axis in fig.
+
+    •  j: The column number to create the axis in fig.
+
+  Keyword Arguments
+  ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+    •  xlabel=L"x": Label for the x-axis.
+
+    •  ylabel=L"y": Label for the y-axis.
+
+    •  nist = true: Whether to use the NIST color scheme. If false, the HSV color scheme is used.
+
+    •  pltkwargs...: Extra keyword arguments for Axis.
+
+  Output
+  ≡≡≡≡≡≡≡≡
+
+  There is no output, but fig is updated with the figure in fig[i, j].
   ```
-  which will print out the documentation.
+  which will print out the documentation. A full list of functions exported from the package (many are not exported, simply performing intermediate operations) can be seen using `names`:
+  ```
+  julia> names(BurgersEquation)
+40-element Vector{Symbol}:
+ :BurgersEquation
+ :LINSPECER_12_J 
+ :LINSPECER_250_J
+ :complex_split_denominator
+ :cubic_caustic
+ :cubic_discriminant
+ :cubic_saddle_points
+ :f
+ :gauss_hermite
+ ⋮
+ :viscous_solution_large_time
+ :viscous_solution_large_time_Ψ
+ :viscous_solution_large_time_Ψ_roots_θ
+ :viscous_solution_large_time_Ψ_roots_ρ
+ :Φ₀
+ :Φ₀_pole
+ :Φ₀_split
+ :∫f
+ ```
   
 - `/paper/`
 
