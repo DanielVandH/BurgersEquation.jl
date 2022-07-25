@@ -37,6 +37,12 @@ and then restart your Julia environment and try again. This second call installs
 using Pkg 
 Pkg.instantiate()
 ```
+You may also need to install my `BaryRational.jl` fork,
+```
+using Pkg
+Pkg.add(url = "https://github.com/DanielVandH/BaryRational.jl")
+end
+```
 
 If you want to run any of the MATLAB code (none of which is called directly), you also need Chebfun.
 
