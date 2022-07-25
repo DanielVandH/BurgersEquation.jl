@@ -35,3 +35,4 @@ for k = 1:3
 end
 writematrix(t, 'data/T_AAA_POLES.dat', 'Delimiter', ',');
 writematrix(aaa_poles, 'data/AAA_POLES.dat', 'Delimiter', ' ');
+fix_i('data/AAA_POLES.dat')
