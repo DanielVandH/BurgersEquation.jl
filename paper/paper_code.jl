@@ -6,12 +6,9 @@ using Contour
 using OrderedCollections
 using Peaks
 using BaryRational
+using DelimitedFiles
 
-const EXTENSION = "png"
-const NIST = true
-const FIGURES = "paper/figures"
-const ALPHABET = join('a':'z')       
-
+include("constants.jl")
 include("introduction.jl")
 include("exact_solution.jl")
 include("parabolic_cylinder_function.jl")
