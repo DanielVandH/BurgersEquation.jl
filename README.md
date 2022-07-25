@@ -38,6 +38,8 @@ using Pkg
 Pkg.instantiate()
 ```
 
+If you want to run any of the MATLAB code (none of which is called directly), you also need Chebfun.
+
 # Contents 
 The two main folders in the repository are `paper` and `src`.
 
@@ -86,26 +88,26 @@ The two main folders in the repository are `paper` and `src`.
   A full list of functions exported from the package (many are not exported, simply performing intermediate operations) can be seen using `names`:
   ```
   julia> names(BurgersEquation)
-40-element Vector{Symbol}:
- :BurgersEquation
- :LINSPECER_12_J 
- :LINSPECER_250_J
- :complex_split_denominator
- :cubic_caustic
- :cubic_discriminant
- :cubic_saddle_points
- :f
- :gauss_hermite
- ⋮
- :viscous_solution_large_time
- :viscous_solution_large_time_Ψ
- :viscous_solution_large_time_Ψ_roots_θ
- :viscous_solution_large_time_Ψ_roots_ρ
- :Φ₀
- :Φ₀_pole
- :Φ₀_split
- :∫f
- ```
+  40-element Vector{Symbol}:
+  :BurgersEquation
+  :LINSPECER_12_J 
+  :LINSPECER_250_J
+  :complex_split_denominator
+  :cubic_caustic
+  :cubic_discriminant
+  :cubic_saddle_points
+  :f
+  :gauss_hermite
+  ⋮
+  :viscous_solution_large_time
+  :viscous_solution_large_time_Ψ
+  :viscous_solution_large_time_Ψ_roots_θ
+  :viscous_solution_large_time_Ψ_roots_ρ
+  :Φ₀
+  :Φ₀_pole
+  :Φ₀_split
+  :∫f
+  ```
   
 - `/paper/`
 
@@ -120,8 +122,9 @@ The two main folders in the repository are `paper` and `src`.
     - `balancing_advection_diffusion.jl`: This contains code for our experiments on how we can relate the steepest of the solution on the real line to the proximity of a pole in the complex plane to the real line. In particular, the code is used to try and find the value $\mu$ that balances the effect of diffusion and advection. The first figure produced from this experiment directly compares these slopes and proximities, and the value in `breakdown_μ` shows the value of $\mu$ that balances these effects according to the slopes, and `μb` is the value according to the proximities. This value of `μb` is not reliably computed, though, since we aren't using specialised methods for highly oscillatory integrals. The second figure produced here shows how we obtain the value of $\mu$ above which there are no longer any poles in the lower-half plane in the similarity solution, with the value given in `μˢ`. The second figure produced here is not shown in the paper.
     - `large_time_solution.jl`: This script contains code for plotting the large-time solution, along with the asymptotic results for the poles.
     - `large_time_solution_roots.jl`: This script contains code for tracking the roots in the large-time solution, although none of this is shown in the paper.
-    - `aaa.jl`: This script contains code for plotting the AAA approximants, using the data from `constants.jl` obtained from the MATLAB script `burger_aaa.m`.
-    - `aaa_closest_poles.jl`: This script contains code for plotting the poles tracked from the AAA approximants, using the data from `constants.jl` obtained from the MATLAB script `burger_tracking_poles.m`.
+    - `aaa.jl`: This script contains code for plotting the AAA approximants, using the data from `constants.jl` obtained from the MATLAB script `burger_aaa.m`. The corresponding Julia code for producing these results is commented out at the top if you are interested.
+    - `aaa_closest_poles.jl`: This script produces a figure comparing the AAA approximant and the exact solution, making the point that the closest poles are quite accurate. The data used for these figures comes from `constants.jl` obtained from the MATLAB script `burger_aaa.m`, but the corresponding Julia code to make the figures is commented out at the top.
+    - `aaa_tracking_poles.jl`: This script contains code for plotting the poles tracked from the AAA approximants, using the data from `constants.jl` obtained from the MATLAB script `burger_tracking_poles.m`. This is included when running `tracking_poles.jl`. The corresponding Julia code that could be used to make these figures is commented out at the top.
     - `small_to_large_transition.jl`: This script contains code for looking at how the solution evolves for large time, noting that the pole-zero pairs get pushed apart to a separation distance of infinity.
 
-Provided you have installed the package correctly, there should be no errors if you simply write `include("paper_code.jl")` in the REPL.
+Provided you have installed the package correctly, there should be no errors if you simply write `include("paper_code.jl")` in the REPL. If you uncomment out the Julia code for the AAA results, you need to install `BaryRational.jl`.
