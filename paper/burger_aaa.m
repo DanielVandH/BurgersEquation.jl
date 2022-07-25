@@ -44,7 +44,7 @@ writematrix(U(:, :, 1), 'data/U_AAA_1.dat', 'Delimiter', ' ')
 writematrix(U(:, :, 2), 'data/U_AAA_2.dat', 'Delimiter', ' ')
 writematrix(U(:, :, 3), 'data/U_AAA_3.dat', 'Delimiter', ' ')
 writematrix(U(:, :, 4), 'data/U_AAA_4.dat', 'Delimiter', ' ')
-fix_i('U_AAA_1.dat');
-fix_i('U_AAA_2.dat');
-fix_i('U_AAA_3.dat');
-fix_i('U_AAA_4.dat');
+fix_i('data/U_AAA_1.dat');
+fix_i('data/U_AAA_2.dat');
+fix_i('data/U_AAA_3.dat');
+fix_i('data/U_AAA_4.dat');
