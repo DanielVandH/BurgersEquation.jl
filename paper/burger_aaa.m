@@ -37,9 +37,9 @@ for k = 1:length(t)
     end
 end
 writematrix(mu, 'data/mu_AAA.dat')
-writematrix(X, 'data/X_AAA.dat', 'Delimiter', ',');
-writematrix(Y, 'data/Y_AAA.dat', 'Delimiter', ',');
-writematrix(t, 'data/T_AAA.dat', 'Delimiter', ',');
+writematrix(X, 'data/X_AAA.dat', 'Delimiter', ' ');
+writematrix(Y, 'data/Y_AAA.dat', 'Delimiter', ' ');
+writematrix(t, 'data/T_AAA.dat', 'Delimiter', ' ');
 writematrix(U(:, :, 1), 'data/U_AAA_1.dat', 'Delimiter', ' ')
 writematrix(U(:, :, 2), 'data/U_AAA_2.dat', 'Delimiter', ' ')
 writematrix(U(:, :, 3), 'data/U_AAA_3.dat', 'Delimiter', ' ')
