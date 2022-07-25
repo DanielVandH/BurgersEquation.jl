@@ -1,6 +1,6 @@
 # BurgersEquation.jl
 
-This package contains code for reproducing the numerical results in our paper (...). 
+This package contains code for reproducing the numerical results in our paper (...). Installation instructions are given below, and a description of the contents follow.
 
 # Installation 
 You can install the package into Julia using 
@@ -32,7 +32,11 @@ using Pkg
 Pkg.add(url = "https://github.com/luchr/ComplexPortraits.jl", rev = "master")
 Pkg.add(url = "https://github.com/DanielVandH/Makie.jl")
 ```
-and then restart your Julia environment and try again.
+and then restart your Julia environment and try again. If even that fails, perhaps try
+```
+using Pkg 
+Pkg.instantiate()
+```
 
 # Contents 
 The two main folders in the repository are `paper` and `src`.
