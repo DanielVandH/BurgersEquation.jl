@@ -32,7 +32,7 @@ using Pkg
 Pkg.add(url = "https://github.com/luchr/ComplexPortraits.jl", rev = "master")
 Pkg.add(url = "https://github.com/DanielVandH/Makie.jl")
 ```
-and then restart your Julia environment and try again. If even that fails, perhaps try
+and then restart your Julia environment and try again. This second call installs my fork of `Makie.jl`, implementing a fix for the tick label issues. If even that fails, perhaps try
 ```
 using Pkg 
 Pkg.instantiate()
