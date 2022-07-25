@@ -2,3 +2,4 @@
 /chebfun/
 /.vscode/
 /paper/*.asv
+/paper/figures/*.pdf
