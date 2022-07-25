@@ -33,3 +33,5 @@ for k = 1:3
         aaa_poles(j, k) = poles(idx);
     end
 end
+writematrix(t, 'data/T_AAA_POLES.dat', 'Delimiter', ',');
+writematrix(aaa_poles, 'data/AAA_POLES.dat', 'Delimiter', ' ');
