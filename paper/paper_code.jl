@@ -5,7 +5,6 @@ using FastGaussQuadrature
 using Contour
 using OrderedCollections
 using Peaks
-#using BaryRational
 using DelimitedFiles
 
 include("constants.jl")
