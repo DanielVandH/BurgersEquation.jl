@@ -1,5 +1,5 @@
 ## General constants 
-const EXTENSION = "pdf"
+const EXTENSION = "png"
 const NIST = true
 const FIGURES = "paper/figures"
 const ALPHABET = join('a':'z')
