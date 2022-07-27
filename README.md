@@ -115,7 +115,7 @@ The two main folders in the repository are `paper` and `src`.
   :Φ₀_split
   :∫f
   ```
-  Not all of these functions are used in the paper, for example `numerical_solution.jl` is not used in the paper, but contains some results for solving Burgers' equation numerically with finite differences by transforming to the heat equation first with the Cole-Hopf transformation. Similarly, `aaa.jl` is not used in the paper but you can use it instead or producing the AAA results (with less accuracy, unfortunately) with Julia rather than with Chebfun in MATLAB (described below). How we would do this is given in the commented code in the AAA files of the `/paper/` code, described below.
+  Not all of these functions are used in the paper, for example `numerical_solution.jl` is not used in the paper, but contains some methods for solving Burgers' equation numerically with finite differences by transforming to the heat equation first with the Cole-Hopf transformation. Similarly, `aaa.jl` is not used in the paper but you can use it instead for producing the AAA results (with less accuracy, unfortunately) with Julia rather than with Chebfun in MATLAB (described below). How we would do this is given in the commented code in the AAA files of the `/paper/` code, described below.
   
 - `/paper/`
 
