@@ -8,36 +8,6 @@ function exploggamma(z::ArbComplex{T}) where {T}
     exp(ArbNumerics.lgamma(z))
 end
 
-function fixed_abs_sq(z::ArbComplex{T}) where {T} # abs(...) doesn't work? 
-    real(z)^2 + imag(z)^2
-end
-
-"""
-    precision_iterate_Φ₀(ξ, μ; max_iters = 50, err = 1e-100)
-
-Iterates over the precision of computing `Φ₀(ξ, μ)`. See [`Φ₀`](@ref).
-"""
-function precision_iterate_Φ₀(ξ, μ; max_iters=50, err=1e-100, type="parabolic")
-    bits = 32 # 104 is the default 
-    ξ = ArbComplex(real(ξ), imag(ξ), bits=bits)
-    μ = ArbReal(μ, bits=bits)
-    val = Φ₀(ξ, μ; type=type, refine=false)
-    ε = 1.0
-    i = 1
-    while ε > err && i ≤ max_iters
-        bits <<= 1
-        ξ = ArbComplex(real(ξ), imag(ξ), bits=bits)
-        μ = ArbReal(μ, bits=bits)
-        valnew = Φ₀(ξ, μ; type=type, refine=false)
-        ε = fixed_abs_sq(val - valnew) / fixed_abs_sq(valnew)
-        @show val, valnew, ε, ξ, μ
-        val = valnew
-        i += 1
-    end
-    @show bits, i, ε
-    return val, bits
-end
-
 """
     parabolicU(a, z)
 
@@ -59,13 +29,9 @@ end
 Computes the first-order small-time solution, given by `Φ₀ = [1/2√(2μ)]parabolicU(1/2 - i/4μ, iξ/√(2μ))/parabolicU(-1/2 - i/4μ, iξ/√(2μ))`. In 
 the second method, `ξ = x + im y`, and similarly in the third method. The third method returns a matrix `A` such that `A[i, j, k]` is the value of 
 `Φ₀` at `z = x[i] + im y[j]` and `μ[k]`.  The last method returns `A[i, j]`, which is the same as before except without `μ[k]` (as it is a scalar).
-In each case, `refine` can be set to `true` so that [`precision_iterate`](@ref) is used to improve the precision of the computed value.
 """
 function Φ₀ end
-function Φ₀(ξ, μ; type="parabolic", refine=false)
-    if refine
-        return precision_iterate_Φ₀(ξ, μ; type=type)[1]
-    end
+function Φ₀(ξ, μ; type="parabolic")
     if type == "kummer"
         a₂ = -im / (8μ)
         a₁ = 1 + a₂
@@ -85,26 +51,26 @@ function Φ₀(ξ, μ; type="parabolic", refine=false)
         return U₁ / (scale * U₂)
     end
 end
-function Φ₀(x, y, μ; type="parabolic", refine=false)
-    return Φ₀(complex(x, y), μ; type=type, refine=refine)
+function Φ₀(x, y, μ; type="parabolic")
+    return Φ₀(complex(x, y), μ; type=type)
 end
-function Φ₀(x::AbstractVector, y::AbstractVector, μ::AbstractVector; type="parabolic", refine=false)
+function Φ₀(x::AbstractVector, y::AbstractVector, μ::AbstractVector; type="parabolic")
     Φ₀_vals = Array{ComplexF64}(undef, x, y, length(μ))
     for (k, m) in enumerate(μ)
         for (j, Y) in enumerate(y)
             for (i, X) in enumerate(x)
-                Φ₀_vals[i, j, k] = Φ₀(X, Y, m; type=type, refine=refine)
+                Φ₀_vals[i, j, k] = Φ₀(X, Y, m; type=type)
             end
         end
     end
     return Φ₀_vals
 end
-function Φ₀(x::AbstractVector{Float64}, y::AbstractVector{Float64}, μ::Float64; type="parabolic", refine=false)
+function Φ₀(x::AbstractVector{Float64}, y::AbstractVector{Float64}, μ::Float64; type="parabolic")
     Φ₀_vals = Matrix{refine ? ArbComplex{T} where {T} : ComplexF64}(undef, length(x), length(y))
     for (j, Y) in enumerate(y)
         for (i, X) in enumerate(x)
             ξ = complex(X, Y)
-            Φ₀_vals[i, j] = Φ₀(ξ, μ; type=type, refine=refine)
+            Φ₀_vals[i, j] = Φ₀(ξ, μ; type=type)
         end
     end
     return Φ₀_vals
