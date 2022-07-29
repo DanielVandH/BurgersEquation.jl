@@ -66,7 +66,7 @@ function Φ₀(x::AbstractVector, y::AbstractVector, μ::AbstractVector; type="p
     return Φ₀_vals
 end
 function Φ₀(x::AbstractVector{Float64}, y::AbstractVector{Float64}, μ::Float64; type="parabolic")
-    Φ₀_vals = Matrix{refine ? ArbComplex{T} where {T} : ComplexF64}(undef, length(x), length(y))
+    Φ₀_vals = Matrix{ComplexF64}(undef, length(x), length(y))
     for (j, Y) in enumerate(y)
         for (i, X) in enumerate(x)
             ξ = complex(X, Y)
