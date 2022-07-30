@@ -9,17 +9,18 @@ t_vals_exact, pole_locs_exact = tracking_poles_exact(z, t, μ)
 t_vals_saddle, pole_locs_saddle = tracking_poles_saddle(z, t, μ)
 
 ## Plot 
-____fig = Figure(fontsize=26, resolution=(800, 400))
+
+____fig = Figure(fontsize=38, resolution=(1200, 400))
 ax1 = Axis(____fig[1, 1], xlabel=L"\mathrm{Re}(z)", ylabel=L"\mathrm{Im}(z)",
     title=L"(a)$:$ Trajectories", titlealign=:left,
     xticks=([0.0, 0.5, 1.0, 1.5, 2.0, 2.5], [L"0", L"0.5", L"1", L"1.5", L"2", L"2.5"]),
     yticks=([0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0], [L"0", L"0.5", L"1", L"1.5", L"2", L"2.5", L"3"]),
-    width=400, height=400)
+    width=600, height=400)
 ax2 = Axis(____fig[1, 2], xlabel=L"t", ylabel=L"\mathrm{Im}(z)",
     title=L"(b)$:$ Distances", titlealign=:left,
     xticks=([0.0, 0.5, 1.0, 1.5, 2.0], [L"0", L"0.5", L"1", L"1.5", L"2"]),
     yticks=([0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0], [L"0", L"0.5", L"1", L"1.5", L"2", L"2.5", L"3"]),
-    width=500, height=400)
+    width=600, height=400)
 for (t, z) in zip(t_vals_exact, pole_locs_exact)
     if z == pole_locs_exact[3]
         global ____a1
@@ -38,10 +39,10 @@ for (t, z) in zip(t_vals_saddle, pole_locs_saddle)
     lines!(ax2, t, imag.(z), color=:red, linewidth=3, linestyle=:dash,
         marker=:rtriangle, markersize=7)
 end
-text!(ax1, L"\mu = 0.5", position=(1.0, 1.86), rotation=0.45, color=:black, textsize=36.4)
+text!(ax1, L"\mu = 0.5", position=(1.0, 1.86), rotation=0.3, color=:black, textsize=36.4)
 text!(ax1, L"\mu = 0.1468", position=(1.0, 1.1), rotation=0.0, color=:black, textsize=36.4)
 text!(ax1, L"\mu = 0.05", position=(0.5, 0.45), rotation=-0.20, color=:black, textsize=36.4)
-text!(ax2, L"\mu = 0.5", position=(1.0, 2.25), rotation=0.3, color=:black, textsize=36.4)
+text!(ax2, L"\mu = 0.5", position=(1.0, 2.25), rotation=0.2, color=:black, textsize=36.4)
 text!(ax2, L"\mu = 0.1468", position=(1.0, 1.1), rotation=0.0, color=:black, textsize=36.4)
 text!(ax2, L"\mu = 0.05", position=(0.5, 0.4), rotation=-0.20, color=:black, textsize=36.4)
 

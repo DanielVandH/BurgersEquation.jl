@@ -47,5 +47,5 @@ for j in 1:3
         markersize=8, color=:green, linewidth=3, linestyle=:dashdot)
 end
 
-axislegend(ax2, [____a1, ____a2, ____a3], [L"$ $Exact", L"$ $Saddle Point", L"$ $AAA"], position=:lt)
+axislegend(ax2, [____a1, ____a2, ____a3], [L"$ $Exact", L"$ $Saddle Point", L"$ $AAA"], position=:lt, labelsize = 26)
 resize_to_layout!(____fig)
