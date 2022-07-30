@@ -6,7 +6,6 @@ using Contour
 using OrderedCollections
 using Peaks
 using DelimitedFiles
-using ArbNumerics
 
 include("constants.jl")
 include("introduction.jl")
