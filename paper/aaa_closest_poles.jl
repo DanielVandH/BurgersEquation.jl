@@ -12,13 +12,13 @@ U = viscous_solution_aaa(N, L, T, t, μ, X, Y)
 t = T_AAA[3]
 u = viscous_solution(X_AAA, Y_AAA, t, μ_AAA)
 
-fig = Figure(fontsize=25)
-portrait!(fig, X_AAA, Y_AAA, U_AAA_3, 1, 1; nist=NIST, width=400, height=400,
+fig = Figure(fontsize=38)
+portrait!(fig, X_AAA, Y_AAA, U_AAA_3, 1, 1; nist=NIST, width=600, height=400,
     title=L"(a):$ $ AAA approximant", titlealign=:left,
     xticks=([-4.0, -2.0, 0.0, 2.0, 4.0], [L"-4", L"-2", L"0", L"2", L"4"]),
     yticks=([ 0.0, 2.0, 4.0], [L"0", L"2", L"4"]))
 portrait!(fig, X_AAA, Y_AAA, u, 1, 2; nist=NIST,
-    title=L"(b):$ $ Exact solution", titlealign=:left, width=400, height=400,
+    title=L"(b):$ $ Exact solution", titlealign=:left, width=600, height=400,
     xticks=([-4.0, -2.0, 0.0, 2.0, 4.0], [L"-4", L"-2", L"0", L"2", L"4"]),
     yticks=([.0, 2.0, 4.0], [L"0", L"2", L"4"]))
 
