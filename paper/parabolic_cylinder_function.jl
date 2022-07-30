@@ -15,7 +15,7 @@ for j in 1:4
     u[j] = viscous_solution.(real(z[j]), imag(z[j]), t, μ[j], Ref(nodes), Ref(weights), Ref(glnodes), Ref(glweights))
 end
 
-fig = Figure(fontsize=33, resolution=(2000, 1600))
+fig = Figure(fontsize=38, resolution=(2000, 1600))
 plot_layout = [[(1, 1), (2, 1), (3, 1), (4, 1)], [(1, 2), (2, 2), (3, 2), (4, 2)],
     [(1, 3), (2, 3), (3, 3), (4, 3)], [(1, 4), (2, 4), (3, 4), (4, 4)]]
 for j = 1:4

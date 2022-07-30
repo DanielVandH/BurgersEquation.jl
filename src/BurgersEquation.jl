@@ -19,6 +19,7 @@ using Peaks
 using Optim 
 using OrderedCollections
 using DifferentialEquations
+using ArbNumerics
 
 include("rootfinding.jl");          export newton_method, twopoint_linesearch
 include("inviscid.jl");             export inviscid_solution, inviscid_singularities
