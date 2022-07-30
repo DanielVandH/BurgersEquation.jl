@@ -5,11 +5,9 @@ function exploggamma(z::Real)
     exp(SpecialFunctions.loggamma(z))
 end
 
-#=
 function exploggamma(z::ArbComplex{T}) where {T}
     exp(ArbNumerics.lgamma(z))
 end
-=#
 
 """
     parabolicU(a, z)
@@ -57,8 +55,8 @@ end
 function Φ₀(x, y, μ; type="parabolic")
     return Φ₀(complex(x, y), μ; type=type)
 end
-function Φ₀(x::AbstractVector, y::AbstractVector, μ::AbstractVector; type="parabolic")
-    Φ₀_vals = Array{ComplexF64}(undef, x, y, length(μ))
+function Φ₀(x::AbstractVector{T}, y::AbstractVector{T}, μ::AbstractVector{T}; type="parabolic") where {T}
+    Φ₀_vals = Array{Complex{T}}(undef, x, y, length(μ))
     for (k, m) in enumerate(μ)
         for (j, Y) in enumerate(y)
             for (i, X) in enumerate(x)
@@ -68,11 +66,21 @@ function Φ₀(x::AbstractVector, y::AbstractVector, μ::AbstractVector; type="p
     end
     return Φ₀_vals
 end
-function Φ₀(x::AbstractVector{Float64}, y::AbstractVector{Float64}, μ::Float64; type="parabolic")
-    Φ₀_vals = Matrix{ComplexF64}(undef, length(x), length(y))
+function Φ₀(x::AbstractVector{T}, y::AbstractVector{T}, μ::T; type="parabolic") where {T}
+    Φ₀_vals = Matrix{Complex{T}}(undef, length(x), length(y))
     for (j, Y) in enumerate(y)
         for (i, X) in enumerate(x)
             ξ = complex(X, Y)
+            Φ₀_vals[i, j] = Φ₀(ξ, μ; type=type)
+        end
+    end
+    return Φ₀_vals
+end
+function Φ₀(x::AbstractVector{ArbReal{P}}, y::AbstractVector{ArbReal{P}}, μ::ArbReal{P}; type="parabolic") where {P}
+    Φ₀_vals = Matrix{ArbComplex{P}}(undef, length(x), length(y))
+    for (j, Y) in enumerate(y)
+        for (i, X) in enumerate(x)
+            ξ = complex(X, Y) # ArbComplex(X, Y)
             Φ₀_vals[i, j] = Φ₀(ξ, μ; type=type)
         end
     end
