@@ -4,9 +4,12 @@ end
 function exploggamma(z::Real)
     exp(SpecialFunctions.loggamma(z))
 end
+
+#=
 function exploggamma(z::ArbComplex{T}) where {T}
     exp(ArbNumerics.lgamma(z))
 end
+=#
 
 """
     parabolicU(a, z)
