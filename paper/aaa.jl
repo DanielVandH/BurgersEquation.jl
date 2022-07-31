@@ -13,7 +13,7 @@ U = viscous_solution_aaa(N, L, T, t, μ, X, Y)
 time_labels = ["0.1", "0.5", "1", "t_s"]
 plot_layout = [[(1, 1), (1, 2)], [(1, 3), (1, 4)], [(2, 1), (2, 2)], [(2, 3), (2, 4)]]
 alphabets = [['a', 'b'], ['c', 'd'], ['e', 'f'], ['g', 'h']]
-fig = Figure(fontsize=48, resolution=(3000.0f0, 1100.1879f0))
+fig = Figure(fontsize=48, resolution=(3200.0f0, 1156.5531f0))
 for j in 1:length(T_AAA)
     portrait!(fig, X_AAA, Y_AAA, U_AAA[j], plot_layout[j][1][1], plot_layout[j][1][2]; nist=NIST,
         title=L"(%$(alphabets[j][1])): $t = %$(time_labels[j])$", titlealign=:left,
@@ -21,10 +21,10 @@ for j in 1:length(T_AAA)
         width = 600, height = 400,
         yticks=([0.0, 2.0, 4.0], [L"0", L"2", L"4"]))
     landscape!(fig, X_AAA, Y_AAA, U_AAA[j], plot_layout[j][2][1], plot_layout[j][2][2]; nist=NIST,
-        title=L"(%$(alphabets[j][2])): $t = %$(time_labels[j])$", titlealign=:left, zlims=(0, 5),
+        title=L"(%$(alphabets[j][2])): $t = %$(time_labels[j])$", titlealign=:left, zlims=(0, 4),
         xticks=([-4.0, 0.0, 4.0], [L"-4", L"0", L"4"]),
         yticks=([0.0, 2.0, 4.0], [L"0", L"2", L"4"]),
-        zticks=([0.0, 2.5, 5.0], [L"0", L"2.5", L"5"]),
+        zticks=([0.0, 2, 4], [L"0", L"2", L"4"]),
         width = 600, height = 400,
         zlabel=L"|r(z, t)|")
     lines!(fig.content[end], X_AAA, zeros(length(X_AAA)), U_AAA[j][:, 1], color=:black, linewidth=5)
