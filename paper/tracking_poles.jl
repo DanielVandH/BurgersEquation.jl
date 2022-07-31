@@ -10,7 +10,7 @@ t_vals_saddle, pole_locs_saddle = tracking_poles_saddle(z, t, μ)
 
 ## Plot 
 
-____fig = Figure(fontsize=38, resolution=(1200, 400))
+____fig = Figure(fontsize=33, resolution=(1200, 400))
 ax1 = Axis(____fig[1, 1], xlabel=L"\mathrm{Re}(z)", ylabel=L"\mathrm{Im}(z)",
     title=L"(a)$:$ Trajectories", titlealign=:left,
     xticks=([0.0, 0.5, 1.0, 1.5, 2.0, 2.5], [L"0", L"0.5", L"1", L"1.5", L"2", L"2.5"]),

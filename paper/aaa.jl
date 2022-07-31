@@ -13,7 +13,7 @@ U = viscous_solution_aaa(N, L, T, t, μ, X, Y)
 time_labels = ["0.1", "0.5", "1", "t_s"]
 plot_layout = [[(1, 1), (1, 2)], [(1, 3), (1, 4)], [(2, 1), (2, 2)], [(2, 3), (2, 4)]]
 alphabets = [['a', 'b'], ['c', 'd'], ['e', 'f'], ['g', 'h']]
-fig = Figure(fontsize=38, resolution=(3000.0f0, 1100.1879f0))
+fig = Figure(fontsize=48, resolution=(3000.0f0, 1100.1879f0))
 for j in 1:length(T_AAA)
     portrait!(fig, X_AAA, Y_AAA, U_AAA[j], plot_layout[j][1][1], plot_layout[j][1][2]; nist=NIST,
         title=L"(%$(alphabets[j][1])): $t = %$(time_labels[j])$", titlealign=:left,

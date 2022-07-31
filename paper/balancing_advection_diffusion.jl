@@ -31,9 +31,9 @@ t_vals, pole_locs = tracking_poles_exact(z₀, μ; t_max=t_max, t_min=t_min)
 
 ## Plots 
 # Real line
-fig = Figure(fontsize=26, resolution=(800, 400))
+fig = Figure(fontsize=33, resolution=(1700, 400))
 ax = Axis(fig[1, 1], xlabel=L"t", ylabel=L"Maximum$ $ absolute slope", title=L"(a):$ $ Slope analysis", titlealign=:left,
-    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),
+    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),height=400,width=600,
     yticks=([0.0, 2.0, 4.0, 6.0, 8.0], [L"0", L"2", L"4", L"6", L"8"]))
 colors = cgrad(LINSPECER_12_J, μ[μ_idx]; categorical=false)
 lines!(ax, t[1:5:283], slopes[1:5:283, 1], color=colors[1], linestyle=:dash)
@@ -43,7 +43,7 @@ xlims!(ax, 0, t_max)
 
 # Closest pole
 ax = Axis(fig[1, 2], xlabel=L"t", ylabel=L"Distance$ $ to real line", title=L"(b):$ $ Pole locations", titlealign=:left,
-    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),
+    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),width=600,height=400,
     yticks=([0.0, 2.0, 4.0, 6.0], [L"0", L"2", L"4", L"6"]))
 zt_vals = Vector{ComplexF64}([])
 for t in t_vals
@@ -93,6 +93,7 @@ scatter!(ax, plot_t, plot_p, color=:red, markersize=4)
 ylims!(ax, 0, 4)
 Colorbar(fig[1, 3], limits=(0.0, 0.5), colormap=colors, label=L"\mu", vertical=true,
     ticks=([0.0, 0.1, 0.2, 0.3, 0.4, 0.5], [L"0.0", L"0.1", L"0.2", L"0.3", L"0.4", L"0.5"]))
+resize_to_layout!(fig)
 save("$FIGURES/advection_diffusion_balance.$EXTENSION", fig)
 
 ## When are there no more zeros in the lower complex plane in the small-time solution?
