@@ -96,9 +96,9 @@ end
 end
 
 """
-    viscous_solution(x::Float64, y::Float64, t::Float64, μ::Float64, nodes, weights, glnodes, glweights)
-    viscous_solution(x, t::Float64, μ::Float64, nodes, weights)
-    viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::AbstractVector)
+    viscous_solution(x::T, y::T, t::T, μ::T, nodes, weights, glnodes, glweights) where {T}
+    viscous_solution(x, t::T, μ::T, nodes, weights) where {T}
+    viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::AbstractVector; num_nodes = 250)
     viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::Float64)
     viscous_solution(x::AbstractVector, y::AbstractVector, t::Float64, μ::Float64)
     viscous_solution(x::AbstractVector, t::AbstractVector, μ::AbstractVector)
@@ -115,12 +115,12 @@ the result is simply a scalar. For the latter methods, the solution is such that
 """
 function viscous_solution end 
 # Yes, there's a better way to do what we do below with a better usage of multiple dispatch.
-function viscous_solution(x::Float64, y::Float64, t::Float64, μ::Float64, nodes, weights, glnodes, glweights)
+function viscous_solution(x::T, y::T, t::T, μ::T, nodes, weights, glnodes, glweights) where {T}
     I₁ = viscous_solution_numerator(x, y, t, μ, nodes, weights, glnodes, glweights)
     I₂ = viscous_solution_denominator(x, y, t, μ, nodes, weights, glnodes, glweights)
     return -2sqrt(μ / t) * I₁ / I₂
 end
-function viscous_solution(x, t::Float64, μ::Float64, nodes, weights)
+function viscous_solution(x, t::T, μ::T, nodes, weights) where {T}
     if t > 0
         # Evaluate numerator  
         f = s -> s * exp(-0.5 / μ * atan(x + 2sqrt(μ * t) * s))
@@ -133,8 +133,7 @@ function viscous_solution(x, t::Float64, μ::Float64, nodes, weights)
         return 1 / (1 + x^2)
     end
 end
-function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::AbstractVector)
-    num_nodes = 250
+function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::AbstractVector; num_nodes = 250)
     nodes, weights = gausshermite(num_nodes)
     glnodes, glweights = gausslegendre(num_nodes)
     u = Array{ComplexF64}(zeros(length(x), length(y), length(t), length(μ)))

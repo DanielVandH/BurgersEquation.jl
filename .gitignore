@@ -3,3 +3,8 @@
 /.vscode/
 /paper/*.asv
 /paper/figures/*.pdf
+paper/movies.jl
+paper/figures/mu1_movie.mp4
+paper/figures/mu3_movie.mp4
+paper/figures/mu2_movie.mp4
+paper/data/U_MOVIE.jld2
