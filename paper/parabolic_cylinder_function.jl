@@ -2,7 +2,9 @@ bt=2048
 x1 = collect(-6.0:0.01:6.0); x2 = collect(-6.0:0.01:6.0); x3 = collect(-6.0:0.01:6.0); x4 = ArbReal.(-6:0.05:6, bits=bt)
 y1 = collect(-6.0:0.01:6.0); y2 = collect(-6.0:0.01:6.0); y3 = collect(-6.0:0.01:6.0); y4 = ArbReal.(-6:0.05:6, bits=bt)
 μ1 = 2.0; μ2 = 1.0; μ3 = 0.5; μ4 = ArbReal(0.1, bits = bt)
-Φ₀_vals = [Φ₀(x1, y1, μ1), Φ₀(x2, y2, μ2), Φ₀(x3, y3, μ3), Φ₀(x4, y4, μ4)]
+#Φ₀_vals = [Φ₀(x1, y1, μ1), Φ₀(x2, y2, μ2), Φ₀(x3, y3, μ3), Φ₀(x4, y4, μ4)]
+#Φ₀_vals64 = Matrix{Complex{Float64}}.(Φ₀_vals)
+@load "paper/data/Phi064vals.jld2"
 t = 1e-6
 z = Vector{Matrix{Union{ComplexF64,ArbComplex{P}} where {P}}}(undef, 4)
 u = Vector{Matrix{Union{ComplexF64,ArbComplex{P}} where {P}}}(undef, 4)
@@ -22,8 +24,9 @@ end
 fig = Figure(fontsize=38, resolution=(2000, 1600))
 plot_layout = [[(1, 1), (2, 1), (3, 1), (4, 1)], [(1, 2), (2, 2), (3, 2), (4, 2)],
     [(1, 3), (2, 3), (3, 3), (4, 3)], [(1, 4), (2, 4), (3, 4), (4, 4)]]
+reverse!(plot_layout)
 for j = 1:4
-    portrait!(fig, x[j], y[j], Complex{Float64}.(Φ₀_vals[j]), plot_layout[j][1][1], plot_layout[j][1][2]; nist=NIST,
+    portrait!(fig, x[j], y[j], Complex{Float64}.(Φ₀_vals64[j]), plot_layout[j][1][1], plot_layout[j][1][2]; nist=NIST,
         title=L"(%$(ALPHABET[j])): $\mu = %$(Float64(μ[j]))$", titlealign=:left,
         xlabel=L"\mathrm{Re}(\xi)", ylabel=L"\mathrm{Im}(\xi)", width=450, height=450,
         xticks=([-5.0, 0.0, 5.0], [L"-5", L"0", L"5"]),
@@ -37,6 +40,21 @@ for j = 1:4
 end
 resize_to_layout!(fig)
 
-fig
+## Add the roots now 
+#=
+ρ = 0.01:0.01:10.0
+θ_roots = zeros(ComplexF64, length(ρ), length(μ))
+for j in eachindex(μ)
+    for i in eachindex(ρ)
+        θ_roots[i, j] = large_ξ_roots_θ(ρ[i], Float64(μ[j]), 1)
+    end
+end
+
+lines!(fig.content[1], real(θ_roots[:, 1]), imag(θ_roots[:, 1]), color=:black, linewidth=6)
+lines!(fig.content[3], real(θ_roots[:, 2]), imag(θ_roots[:, 2]), color=:black, linewidth=6)
+lines!(fig.content[5], real(θ_roots[:, 3]), imag(θ_roots[:, 3]), color=:black, linewidth=6)
+lines!(fig.content[7], real(θ_roots[:, 4]), imag(θ_roots[:, 4]), color=:black, linewidth=6)
+=#
+
 
 save("$FIGURES/similarity_solutions.$EXTENSION", fig)

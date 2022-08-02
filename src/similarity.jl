@@ -86,3 +86,12 @@ function Φ₀(x::AbstractVector{ArbReal{P}}, y::AbstractVector{ArbReal{P}}, μ:
     end
     return Φ₀_vals
 end
+
+function large_ξ_roots_θ(ρ::Float64, μ::Float64, quadrant)
+    if quadrant == 1
+        θ = π/4 + 2μ/(ρ^2 + 1) * (log(ρ) - π/(8μ) - log(sinh(π/(4μ))))
+    else
+        throw(MethodError(large_ξ_roots_θ, "Invalid quadrant specified."))
+    end
+    return ρ * exp(im*θ)
+end
