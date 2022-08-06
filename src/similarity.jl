@@ -87,11 +87,37 @@ function Φ₀(x::AbstractVector{ArbReal{P}}, y::AbstractVector{ArbReal{P}}, μ:
     return Φ₀_vals
 end
 
-function large_ξ_roots_θ(ρ::Float64, μ::Float64, quadrant)
+function large_ξ_roots_θ(ρ, μ, quadrant)
     if quadrant == 1
         θ = π/4 + 2μ/(ρ^2 + 1) * (log(ρ) - π/(8μ) - log(sinh(π/(4μ))))
     else
         throw(MethodError(large_ξ_roots_θ, "Invalid quadrant specified."))
     end
-    return ρ * exp(im*θ)
+    return θ
+end
+
+function large_ξ_roots_α(μ)
+    expmα = 1/gamma(-im/(4μ)) * (4μ*π/sinh(π/(4μ)))^(1/2)
+    α = -angle(expmα)
+    return α
+end
+function large_ξ_roots_ρ_function(ξ, μ)
+    ρ = abs(ξ)
+    α = large_ξ_roots_α(μ)
+    LHS = -(ρ^2+1)/(2μ) * tan((ρ^2+2*log(ρ))/(4μ)-(π/4)+α)
+    RHS = log(ρ) - π/(8μ) - log(sinh(π/(4μ)))
+    return LHS-RHS
+end
+function large_ξ_roots_ρ_function_deriv(ξ, μ)
+    ρ = abs(ξ)
+    α = large_ξ_roots_α(μ)
+    return -1/ρ - ρ*tan(α-π/4+(2log(ρ)+ρ^2)/(4μ))/μ - (ρ^2+1)*(tan(α-π/4+(2log(ρ)+ρ^2)/(4μ))^2+1)*(2ρ+2/ρ)/(8μ^2)
+end
+function large_ξ_roots_ρ(ξ, μ)
+    f = x -> large_ξ_roots_ρ_function(x, μ)
+    f′ = x -> large_ξ_roots_ρ_function_deriv(x, μ)
+    ρ = newton_method(f, f′, ξ)
+    ϑ = large_ξ_roots_θ(ρ, μ, 1)
+    ζ = ρ*exp(im*ϑ)
+    return ζ
 end

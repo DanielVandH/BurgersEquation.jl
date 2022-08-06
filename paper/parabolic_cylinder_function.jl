@@ -1,7 +1,16 @@
-bt=2048
-x1 = collect(-6.0:0.01:6.0); x2 = collect(-6.0:0.01:6.0); x3 = collect(-6.0:0.01:6.0); x4 = ArbReal.(-6:0.05:6, bits=bt)
-y1 = collect(-6.0:0.01:6.0); y2 = collect(-6.0:0.01:6.0); y3 = collect(-6.0:0.01:6.0); y4 = ArbReal.(-6:0.05:6, bits=bt)
-μ1 = 2.0; μ2 = 1.0; μ3 = 0.5; μ4 = ArbReal(0.1, bits = bt)
+bt = 2048
+x1 = collect(-6.0:0.01:6.0);
+x2 = collect(-6.0:0.01:6.0);
+x3 = collect(-6.0:0.01:6.0);
+x4 = ArbReal.(-6:0.05:6, bits=bt);
+y1 = collect(-6.0:0.01:6.0);
+y2 = collect(-6.0:0.01:6.0);
+y3 = collect(-6.0:0.01:6.0);
+y4 = ArbReal.(-6:0.05:6, bits=bt);
+μ1 = 2.0;
+μ2 = 1.0;
+μ3 = 0.5;
+μ4 = ArbReal(0.1, bits=bt);
 #Φ₀_vals = [Φ₀(x1, y1, μ1), Φ₀(x2, y2, μ2), Φ₀(x3, y3, μ3), Φ₀(x4, y4, μ4)]
 #Φ₀_vals64 = Matrix{Complex{Float64}}.(Φ₀_vals)
 @load "paper/data/Phi064vals.jld2"
@@ -56,5 +65,47 @@ lines!(fig.content[5], real(θ_roots[:, 3]), imag(θ_roots[:, 3]), color=:black,
 lines!(fig.content[7], real(θ_roots[:, 4]), imag(θ_roots[:, 4]), color=:black, linewidth=6)
 =#
 
+fig = Figure()
+j = 1
+xp = vec(real(z[j]))
+yp = vec(imag(z[j]))
+zp = vec(angle.(-Complex{Float64}.(Φ₀_vals64[j])))
+ax = Axis(fig[1, 1])
+scatter!(ax, vec(real(z[j])), vec(imag(z[j])), color=vec(angle.(-Complex{Float64}.(Φ₀_vals64[j]))), colormap=ComplexPortraits.nist_colors(241))
+on(events(ax).mousebutton) do event
+    if event.button == Mouse.left
+        mp = events(ax).mouseposition[]
+        @show mp
+    end
+end
+fig
+
+scene = Scene()
+scatter!(scene, xp, yp, color=zp, colormap=ComplexPortraits.nist_colors(241))
+on(events(scene).mousebutton) do event
+    if event.button == Mouse.left
+        mp = events(scene).mouseposition[]
+        @show mp
+    end
+end
+
+j = 1
+fig = Figure()
+ax = Axis(fig[1, 1])
+scatter!(ax, vec(real(z[j])), vec(imag(z[j])), color=vec(angle.(-Complex{Float64}.(Φ₀_vals64[j]))), colormap=ComplexPortraits.nist_colors(241))
+fig
+
+ξ1 = [complex(0.0020, 1.0041)]
+ξ2 = [complex(1.650e-3, 1.0024), complex(0.00365, 1.0044), complex(0.00500, 1.0057)]
+ξ3 = [complex(0.0014, 1.0012), complex(0.00265, 1.00270), complex(0.0036, 1.0037),
+    complex(0.00435, 1.0045), complex(0.0051, 1.00525), complex(0.0056, 1.0058)]
+ξ4 = [complex(0.0013, 0.9998), complex(0.0015, 1.0005), complex(0.0017, 1.00095),
+    complex(0.0021, 1.0012), complex(0.00235, 1.0017), complex(0.00260, 1.0020),
+    complex(0.00280, 1.0023), complex(0.0030, 1.0025), complex(0.00320, 1.0027),
+    complex(0.00340, 1.0029)]
+
+scatter!(ax, real(ξ2), imag(ξ2))
+ξ = large_ξ_roots_ρ.(abs.(ξ4), 0.1)
+scatter!(ax, real(ξ), imag(ξ))
 
 save("$FIGURES/similarity_solutions.$EXTENSION", fig)

@@ -42,8 +42,8 @@ legendentries = OrderedDict(L"10" => LineElement(linestyle=nothing, linewidth=2.
     L"100" => LineElement(linestyle=nothing, linewidth=2.0, color=:magenta))
 Legend(fig[1:2, 0], [values(legendentries)...], [keys(legendentries)...], L"$t$", orientation=:vertical, labelsize=36, titlesize=36, titleposition=:top)
 
-x = -12:0.01:12 |> collect
-y = 0:0.01:12 |> collect
+x = -40:0.01:40 |> collect
+y = 0:0.01:40 |> collect
 μ = [0.1, 1.0]
 vals = viscous_solution_large_time_Ψ(x, y, μ)
 ρ = 3:0.01:88
@@ -60,10 +60,10 @@ portrait!(fig, x, y, vals[:, :, 1], 1, 2, nist=NIST,
         [L"0", L"4", L"8", L"12", L"16", L"20", L"24"]),
     title=L"(b): $\mu = 0.1$", titlealign=:left,width=600,
     height=400)
-lines!(fig.content[end], real(poles[:, 1]), imag(poles[:, 1]), color=:black, linewidth=6)
-scatter!(fig.content[end], real(poles_n[:, 1]), imag(poles_n[:, 1]), color=:white, markersize=16)
-lines!(fig.content[end], real(poles_2[:, 1]), imag(poles_2[:, 1]), color=:black, linewidth=6)
-scatter!(fig.content[end], real(poles_n_2[:, 1]), imag(poles_n_2[:, 1]), color=:white, markersize=16)
+lines!(fig.content[end], real(poles[:, 1]), imag(poles[:, 1]), color=:black, linewidth=3)
+scatter!(fig.content[end], real(poles_n[:, 1]), imag(poles_n[:, 1]), color=:white, markersize=8)
+lines!(fig.content[end], real(poles_2[:, 1]), imag(poles_2[:, 1]), color=:black, linewidth=3)
+scatter!(fig.content[end], real(poles_n_2[:, 1]), imag(poles_n_2[:, 1]), color=:white, markersize=8)
 xlims!(fig.content[end], x[1], x[end])
 ylims!(fig.content[end], y[1], y[end])
 xlims!(fig.content[end], -12, 12)
@@ -75,10 +75,10 @@ portrait!(fig, x, y, vals[:, :, 2], 2, 2, width=600, height=400, nist=NIST,
     yticks=([0, 4, 8, 12, 16, 20, 24],
         [L"0", L"4", L"8", L"12", L"16", L"20", L"24"]),
     title=L"(e): $\mu = 1$", titlealign=:left)
-lines!(fig.content[end], real(poles[:, 2]), imag(poles[:, 2]), color=:black, linewidth=6)
-scatter!(fig.content[end], real(poles_n[:, 2]), imag(poles_n[:, 2]), color=:white, markersize=16)
-lines!(fig.content[end], real(poles_2[:, 2]), imag(poles_2[:, 2]), color=:black, linewidth=6)
-scatter!(fig.content[end], real(poles_n_2[:, 2]), imag(poles_n_2[:, 2]), color=:white, markersize=16)
+lines!(fig.content[end], real(poles[:, 2]), imag(poles[:, 2]), color=:black, linewidth=3)
+scatter!(fig.content[end], real(poles_n[:, 2]), imag(poles_n[:, 2]), color=:white, markersize=8)
+lines!(fig.content[end], real(poles_2[:, 2]), imag(poles_2[:, 2]), color=:black, linewidth=3)
+scatter!(fig.content[end], real(poles_n_2[:, 2]), imag(poles_n_2[:, 2]), color=:white, markersize=8)
 xlims!(fig.content[end], -12, 12)
 ylims!(fig.content[end], 0, 12)
 

@@ -26,7 +26,7 @@ include("inviscid.jl");             export inviscid_solution, inviscid_singulari
 include("quadrature.jl");           export gauss_legendre_finite, gauss_legendre_left_infinite, gauss_legendre_right_infinite, gauss_hermite
 include("viscous.jl");              export viscous_solution
 include("plotting.jl");             export portrait!, landscape!, LINSPECER_12_J, LINSPECER_250_J
-include("similarity.jl");           export parabolicU, Φ₀, large_ξ_roots_θ
+include("similarity.jl");           export parabolicU, Φ₀, large_ξ_roots_θ, large_ξ_roots_α, large_ξ_roots_ρ_function, large_ξ_roots_ρ, large_ξ_roots_ρ_function_deriv
 include("large_time.jl");           export viscous_solution_large_time, viscous_solution_large_time_Ψ, viscous_solution_large_time_Ψ_roots_θ, viscous_solution_large_time_Ψ_roots_ρ
 include("steepest_descents.jl");    export saddle_point_approximation_μ, cubic_caustic, cubic_discriminant, cubic_saddle_points
 include("split_functions.jl");      export complex_split_denominator, saddle_point_approximation_μ_split, Φ₀_split
