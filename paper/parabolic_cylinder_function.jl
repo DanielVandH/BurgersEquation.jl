@@ -92,16 +92,6 @@ end
 [xlims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
 [ylims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
 
-#=
-fig = Figure()
-portrait!(fig, x4, y4, Complex{Float64}.(Φ₀_vals64[4]), 1, 1)
-scatter!(fig.content[end], real(ξs[4]), imag(ξs[4]))
-scatter!(fig.content[end], real(ξs2[4]), imag(ξs2[4]))
-fig
-=#
-
 resize_to_layout!(fig)
-
-fig
 
 save("$FIGURES/similarity_solutions.$EXTENSION", fig)
