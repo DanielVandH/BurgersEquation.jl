@@ -89,27 +89,35 @@ end
 
 function large_ξ_roots_θ(ρ, μ, quadrant)
     if quadrant == 1
-        θ = π/4 + 2μ/(ρ^2 + 1) * (log(ρ) - π/(8μ) - 1/2*log(sinh(π/(4μ))))
+        θ = π / 4 + 2μ / (ρ^2 + 1) * (log(ρ) - π / (8μ) - 1 / 2 * log(sinh(π / (4μ))))
+    elseif quadrant == 2
+        θ = 3π / 4 + 2μ / (ρ^2 - 1) * (-log(ρ) - π / (8μ) + 1 / 2 * log(sinh(π / (4μ))))
     else
         throw(MethodError(large_ξ_roots_θ, "Invalid quadrant specified."))
     end
     return θ
 end
 function large_ξ_roots_α(μ)
-    expmα = 1/gamma(-im/(4μ))
+    expmα = 1 / gamma(-im / (4μ))
     α = -angle(expmα)
     return α
 end
-function large_ξ_roots_ρ_function(ρ, μ)
+function large_ξ_roots_ρ_function(ρ, μ, quadrant)
     α = large_ξ_roots_α(μ)
-    LHS = -(ρ^2+1)/(2μ) * tan((ρ^2+2*log(ρ)-log(2μ))/(4μ)-(π/4)+α)
-    RHS = log(ρ) - π/(8μ) - 1/2 * log(sinh(π/(4μ)))
-    return RHS - LHS
+    if quadrant == 1
+        LHS = -(ρ^2 + 1) / (2μ) * tan((ρ^2 + 2 * log(ρ) - log(2μ)) / (4μ) - (π / 4) + α)
+        RHS = log(ρ) - π / (8μ) - 1 / 2 * log(sinh(π / (4μ)))
+        return RHS - LHS
+    else
+        LHS = (ρ^2 - 1) / (2μ) * tan((log(ρ^2/(2μ)) - ρ^2)/(4μ) + π/4 + α)
+        RHS = log(ρ) - 7π/(8μ) - 1/2 * log(sinh(π/(4μ)))
+        return RHS - LHS
+    end
 end
-function large_ξ_roots_ρ(ξ, μ)
-    f = x -> large_ξ_roots_ρ_function(x, μ)
+function large_ξ_roots_ρ(ξ, μ, quadrant=1)
+    f = x -> large_ξ_roots_ρ_function(x, μ, quadrant)
     ρ = newton_method(f, ξ)
-    ϑ = large_ξ_roo2ts_θ(ρ, μ, 1)
-    ζ = ρ*exp(im*ϑ)
+    ϑ = large_ξ_roots_θ(ρ, μ, quadrant)
+    ζ = ρ * exp(im * ϑ)
     return ζ
 end

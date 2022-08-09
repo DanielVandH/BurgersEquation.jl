@@ -1,16 +1,16 @@
 bt = 2048
-x1 = collect(-6.0:0.01:6.0);
-x2 = collect(-6.0:0.01:6.0);
-x3 = collect(-6.0:0.01:6.0);
-x4 = ArbReal.(-6:0.05:6, bits=bt);
-y1 = collect(-6.0:0.01:6.0);
-y2 = collect(-6.0:0.01:6.0);
-y3 = collect(-6.0:0.01:6.0);
-y4 = ArbReal.(-6:0.05:6, bits=bt);
-μ1 = 2.0;
-μ2 = 1.0;
-μ3 = 0.5;
-μ4 = ArbReal(0.1, bits=bt);
+x1 = collect(-6.0:0.01:6.0)
+x2 = collect(-6.0:0.01:6.0)
+x3 = collect(-6.0:0.01:6.0)
+x4 = ArbReal.(-6:0.05:6, bits=bt)
+y1 = collect(-6.0:0.01:6.0)
+y2 = collect(-6.0:0.01:6.0)
+y3 = collect(-6.0:0.01:6.0)
+y4 = ArbReal.(-6:0.05:6, bits=bt)
+μ1 = 2.0
+μ2 = 1.0
+μ3 = 0.5
+μ4 = ArbReal(0.1, bits=bt)
 #Φ₀_vals = [Φ₀(x1, y1, μ1), Φ₀(x2, y2, μ2), Φ₀(x3, y3, μ3), Φ₀(x4, y4, μ4)]
 #Φ₀_vals64 = Matrix{Complex{Float64}}.(Φ₀_vals)
 @load "paper/data/Phi064vals.jld2"
@@ -36,76 +36,72 @@ plot_layout = [[(1, 1), (2, 1), (3, 1), (4, 1)], [(1, 2), (2, 2), (3, 2), (4, 2)
 reverse!(plot_layout)
 for j = 1:4
     portrait!(fig, x[j], y[j], Complex{Float64}.(Φ₀_vals64[j]), plot_layout[j][1][1], plot_layout[j][1][2]; nist=NIST,
-        title=L"(%$(ALPHABET[j])): $\mu = %$(Float64(μ[j]))$", titlealign=:left,
+        title=L"(%$(ALPHABET[4-j+1])): $\mu = %$(Float64(μ[j]))$", titlealign=:left,
         xlabel=L"\mathrm{Re}(\xi)", ylabel=L"\mathrm{Im}(\xi)", width=450, height=450,
         xticks=([-5.0, 0.0, 5.0], [L"-5", L"0", L"5"]),
         yticks=([-5.0, 0.0, 5.0], [L"-5", L"0", L"5"]))
 
     portrait!(fig, real.(z[j]), imag.(z[j]), Complex{Float64}.(u[j]), plot_layout[j][2][1], plot_layout[j][2][2]; nist=NIST,
-        title=L"(%$(ALPHABET[j+8])): $\mu = %$(Float64(μ[j]))$, $t = 10^{-6}$", titlealign=:left,
+        title=L"(%$(ALPHABET[8-j+1])): $\mu = %$(Float64(μ[j]))$, $t = 10^{-6}$", titlealign=:left,
         xlabel=L"x", ylabel=L"y", width=450, height=450,
         xticks=([-0.005, 0.0, 0.005], [L"-0.005", L"0", L"0.005"]),
         yticks=([0.995, 1.0, 1.005], [L"0.995", L"1", L"1.005"]))
 end
-resize_to_layout!(fig)
+ξ1 = [complex(1.9, 4.1), [sqrt(8n * Float64(μ1) * π) for n in 2:100]...]
+ξ2 = [complex(1.75, 2.5), complex(3.75, 4.4), complex(5.0, 5.6),
+    [sqrt(8n * Float64(μ2) * π) for n in 4:100]...]
+ξ3 = [complex(1.5, 1.2), complex(2.7, 2.8), complex(3.6, 3.75),
+    complex(4.4, 4.5), complex(5.0, 5.2), complex(5.6, 5.7),
+    [sqrt(8n * Float64(μ3) * π) for n in 7:100]...]
+ξ4 = [complex(1.5, 0.5), complex(1.8, 1.0), complex(2.2, 1.4),
+    complex(2.4, 1.8), complex(3.2, 2.7),
+    complex(2.6, 2.0), complex(2.8, 2.2),
+    complex(2.8, 2.2), complex(3.0, 2.5), complex(3.4, 3.0),
+    complex(3.6, 3.1), complex(3.7, 3.3), complex(3.9, 3.5),
+    complex(4.025, 3.65), [sqrt(8n * Float64(μ4) * π) for n in 13:100]...]
+ξ = [ξ1, ξ2, ξ3, ξ4]
+ξs = [large_ξ_roots_ρ.(abs.(ξ[i]), Float64(μ[i])) for i in 1:4]
+ρ = 1.0:0.01:200.0
+θs = [large_ξ_roots_θ.(ρ, Float64(μ[i]), 1) for i in 1:4]
+ρs = [@. ρ * exp(im * θs[i]) for i in 1:4]
+[lines!(fig.content[i], real(ρs[j]), imag(ρs[j]), color=:black, linewidth=3) for (i, j) in zip([1, 3, 5, 7], 1:4)]
+[scatter!(fig.content[i], real(ξs[j]), imag(ξs[j]), color=:white, markersize=j < 4 ? 8 : 6) for (i, j) in zip([1, 3, 5, 7], 1:4)]
+[xlims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
+[ylims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
 
-## Add the roots now 
+
+ρ = 2.4:0.01:200.0
+θs2 = [large_ξ_roots_θ.(ρ, Float64(μ[i]), 2) for i in 1:4]
+ρs2 = [@. ρ * exp(im * θs2[i]) for i in 1:4]
+[lines!(fig.content[i], real(ρs2[j]), imag(ρs2[j]), color=:black, linewidth=3) for (i, j) in zip([1, 3, 5, 7], 1:4)]
+
+ξ12 = [sqrt(8n * Float64(μ1) * π) for n in 1:100]
+ξ22 = [sqrt(8n * Float64(μ2) * π) for n in 1:100]
+ξ32 = [sqrt(8n * Float64(μ3) * π) for n in 1:100]
+ξ42 = [complex(-1.6, 1.6), complex(-2.0, 2.0), complex(-2.3, 2.3),
+    complex(-2.6, 2.6), complex(-2.85, 2.85), complex(-3.1, 3.1),
+    complex(-3.3, 3.30), complex(-3.5, 3.5), complex(-3.65, 3.65),
+    [sqrt(8n * Float64(μ4) * π) for n in 12:100]...]
+ξ2 = [ξ12, ξ22, ξ32, ξ42]
+ξs2 = [large_ξ_roots_ρ.(abs.(ξ2[i]), Float64(μ[i]), 2) for i in 1:4]
+ρ2 = 2.4:0.01:200.0
+θs2 = [large_ξ_roots_θ.(ρ2, Float64(μ[i]), 2) for i in 1:4]
+ρs2 = [@. ρ2 * exp(im * θs2[i]) for i in 1:4]
+[lines!(fig.content[i], real(ρs2[j]), imag(ρs2[j]), color=:black, linewidth=3) for (i, j) in zip([1, 3, 5, 7], 1:4)]
+[scatter!(fig.content[i], real(ξs2[j]), imag(ξs2[j]), color=:white, markersize=j < 4 ? 8 : 6) for (i, j) in zip([1, 3, 5, 7], 1:4)]
+[xlims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
+[ylims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
+
 #=
-ρ = 0.01:0.01:10.0
-θ_roots = zeros(ComplexF64, length(ρ), length(μ))
-for j in eachindex(μ)
-    for i in eachindex(ρ)
-        θ_roots[i, j] = large_ξ_roots_θ(ρ[i], Float64(μ[j]), 1)
-    end
-end
-
-lines!(fig.content[1], real(θ_roots[:, 1]), imag(θ_roots[:, 1]), color=:black, linewidth=6)
-lines!(fig.content[3], real(θ_roots[:, 2]), imag(θ_roots[:, 2]), color=:black, linewidth=6)
-lines!(fig.content[5], real(θ_roots[:, 3]), imag(θ_roots[:, 3]), color=:black, linewidth=6)
-lines!(fig.content[7], real(θ_roots[:, 4]), imag(θ_roots[:, 4]), color=:black, linewidth=6)
+fig = Figure()
+portrait!(fig, x4, y4, Complex{Float64}.(Φ₀_vals64[4]), 1, 1)
+scatter!(fig.content[end], real(ξs[4]), imag(ξs[4]))
+scatter!(fig.content[end], real(ξs2[4]), imag(ξs2[4]))
+fig
 =#
 
-fig = Figure()
-j = 1
-xp = vec(real(z[j]))
-yp = vec(imag(z[j]))
-zp = vec(angle.(-Complex{Float64}.(Φ₀_vals64[j])))
-ax = Axis(fig[1, 1])
-scatter!(ax, vec(real(z[j])), vec(imag(z[j])), color=vec(angle.(-Complex{Float64}.(Φ₀_vals64[j]))), colormap=ComplexPortraits.nist_colors(241))
-on(events(ax).mousebutton) do event
-    if event.button == Mouse.left
-        mp = events(ax).mouseposition[]
-        @show mp
-    end
-end
+resize_to_layout!(fig)
+
 fig
-
-scene = Scene()
-scatter!(scene, xp, yp, color=zp, colormap=ComplexPortraits.nist_colors(241))
-on(events(scene).mousebutton) do event
-    if event.button == Mouse.left
-        mp = events(scene).mouseposition[]
-        @show mp
-    end
-end
-
-j = 1
-fig = Figure()
-ax = Axis(fig[1, 1])
-scatter!(ax, vec(real(z[j])), vec(imag(z[j])), color=vec(angle.(-Complex{Float64}.(Φ₀_vals64[j]))), colormap=ComplexPortraits.nist_colors(241))
-fig
-
-ξ1 = [complex(0.0020, 1.0041)]
-ξ2 = [complex(1.650e-3, 1.0024), complex(0.00365, 1.0044), complex(0.00500, 1.0057)]
-ξ3 = [complex(0.0014, 1.0012), complex(0.00265, 1.00270), complex(0.0036, 1.0037),
-    complex(0.00435, 1.0045), complex(0.0051, 1.00525), complex(0.0056, 1.0058)]
-ξ4 = [complex(0.0013, 0.9998), complex(0.0015, 1.0005), complex(0.0017, 1.00095),
-    complex(0.0021, 1.0012), complex(0.00235, 1.0017), complex(0.00260, 1.0020),
-    complex(0.00280, 1.0023), complex(0.0030, 1.0025), complex(0.00320, 1.0027),
-    complex(0.00340, 1.0029)]
-
-scatter!(ax, real(ξ2), imag(ξ2))
-ξ = large_ξ_roots_ρ.(abs.(ξ4), 0.1)
-scatter!(ax, real(ξ), imag(ξ))
 
 save("$FIGURES/similarity_solutions.$EXTENSION", fig)
