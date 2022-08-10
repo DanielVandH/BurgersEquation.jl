@@ -53,7 +53,7 @@ end
 ξ3 = [complex(1.5, 1.2), complex(2.7, 2.8), complex(3.6, 3.75),
     complex(4.4, 4.5), complex(5.0, 5.2), complex(5.6, 5.7),
     [sqrt(8n * Float64(μ3) * π) for n in 7:100]...]
-ξ4 = [complex(1.5, 0.5), complex(1.8, 1.0), complex(2.2, 1.4),
+ξ4 = [complex(1.2, -0.1), complex(1.5, 0.5), complex(1.8, 1.0), complex(2.2, 1.4),
     complex(2.4, 1.8), complex(3.2, 2.7),
     complex(2.6, 2.0), complex(2.8, 2.2),
     complex(2.8, 2.2), complex(3.0, 2.5), complex(3.4, 3.0),
@@ -68,7 +68,6 @@ end
 [scatter!(fig.content[i], real(ξs[j]), imag(ξs[j]), color=:white, markersize=j < 4 ? 8 : 6) for (i, j) in zip([1, 3, 5, 7], 1:4)]
 [xlims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
 [ylims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
-
 
 ρ = 2.4:0.01:200.0
 θs2 = [large_ξ_roots_θ.(ρ, Float64(μ[i]), 2) for i in 1:4]
@@ -93,5 +92,7 @@ end
 [ylims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]
 
 resize_to_layout!(fig)
+
+fig
 
 save("$FIGURES/similarity_solutions.$EXTENSION", fig)
