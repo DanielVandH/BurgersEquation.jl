@@ -88,3 +88,131 @@ end
 colgap!(ga, 90)
 save("$FIGURES/contour_surface_plot.$EXTENSION", fig)
 
+## Is the pair of saddle points the same for all poles z(t)?
+
+# Need to start by computing the poles 
+t = [2.0, 2.0, 2.0]
+μ = [0.05, 0.1468, 0.5]
+z = [2.0713428071028632 + 0.48208285060903094im,
+    2.125956790502127 + 1.1121784646136845im,
+    2.3122739258833174 + 2.711309573638537im]
+t_vals_exact, pole_locs_exact = tracking_poles_exact(z, t, μ) # See tracking_poles.jl 
+outer_size = length(t_vals_exact[1]) # same for 2, 3 
+spacing = 50
+_t_vals_exact = [t_vals_exact[i][j] for j in 1:spacing:outer_size, i in eachindex(μ)]
+_pole_locs_exact = [pole_locs_exact[i][j] for j in 1:spacing:outer_size, i in eachindex(μ)]
+outer_size = size(_pole_locs_exact, 1) # same for 2, 3
+
+# Now, for all the poles, we need to compute the saddle points (z₁, z₂, z₃)
+s₁ = deepcopy(_pole_locs_exact)
+s₂ = deepcopy(_pole_locs_exact)
+s₃ = deepcopy(_pole_locs_exact)
+for i in eachindex(μ)
+    for j in 1:outer_size
+        if j == 1
+            s₁[j, i], s₂[j, i], s₃[j, i] = ComplexF64(NaN, NaN), ComplexF64(NaN, NaN), ComplexF64(NaN, NaN)
+        else
+            _s₁, _s₂, _s₃ = cubic_saddle_points(_pole_locs_exact[j, i], _t_vals_exact[j, i])
+            h(s) = -0.5atan(s) - (_pole_locs_exact[j, i] - s)^2 / (4.0 * _t_vals_exact[j, i])
+            h(u, v) = h(u + im * v)
+            Diff₁₂ = abs(real(h(_s₁)) - real(h(_s₂)))
+            Diff₁₃ = abs(real(h(_s₁)) - real(h(_s₃)))
+            Diff₂₃ = abs(real(h(_s₂)) - real(h(_s₃)))
+            Diffs = [Diff₁₂, Diff₁₃, Diff₂₃]
+            idx = findmin(Diffs)[2]
+            if idx == 1
+                s₁[j, i], s₂[j, i], s₃[j, i] = _s₁, _s₂, _s₃
+            elseif idx == 2
+                s₁[j, i], s₂[j, i], s₃[j, i] = _s₁, _s₃, _s₂
+            elseif idx == 3
+                s₁[j, i], s₂[j, i], s₃[j, i] = _s₂, _s₃, _s₁
+            end
+        end
+    end
+end
+
+# Now, for all the poles, we need to compute the contour data 
+domain = [-4.0 4.0; -4.0 4.0]
+colors = cgrad(LINSPECER_250_J, LinRange(-1, 1, 100), categorical=false)
+u = domain[1, 1]:0.01:domain[1, 2]
+v = domain[2, 1]:0.01:domain[2, 2]
+contour_real = [zeros(length(u), length(v)) for _ in 1:outer_size, _ in eachindex(μ)]
+contour_imag = [zeros(length(u), length(v)) for _ in 1:outer_size, _ in eachindex(μ)]
+for i in eachindex(μ)
+    for j in 1:outer_size
+        h(s) = -0.5atan(s) - (_pole_locs_exact[j, i] - s)^2 / (4.0 * _t_vals_exact[j, i])
+        h(u, v) = h(u + im * v)
+        ℜh(u, v) = j == 1 ? NaN : real(h(u, v))
+        ℑh(u, v) = j == 1 ? NaN : imag(h(u, v))
+        contour_real[j, i] .= [ℜh(u, v) for u in u, v in v]
+        contour_imag[j, i] .= [ℑh(u, v) for u in u, v in v]
+    end
+end
+
+# Next, compute all the levels k 
+k = [Float64[] for _ in axes(_pole_locs_exact, 1), _ in axes(_pole_locs_exact, 2)]
+for i in eachindex(μ)
+    for j in 1:outer_size
+        h(s) = -0.5atan(s) - (_pole_locs_exact[j, i] - s)^2 / (4.0 * _t_vals_exact[j, i])
+        _s₁, _s₂, _s₃ = s₁[j, i], s₂[j, i], s₃[j, i]
+        push!(k[j, i], [imag(h(_s₁)), imag(h(_s₂)), imag(h(_s₃))]...)
+    end
+end
+
+# Prepare the axes 
+j = Observable(2)
+fig = Figure(fontsize=48, resolution=(2270.2766f0, 779.6094f0))
+
+ax1 = Axis(fig[1, 1], xlabel=L"\mathrm{Re}(s)", ylabel=L"\mathrm{Im}(s)",
+    title=Makie.lift(_j -> L"(a): $\mu = %$(μ[1])$, $t = %$(rpad(round(_t_vals_exact[_j, 1], digits = 3), 5, '0'))$", j),
+    titlealign=:left,
+    xticks=(-4:2:4, [L"%$s" for s in -4:2:4]),
+    yticks=(-4:2:4, [L"%$s" for s in -4:2:4]),
+    width=600,
+    height=600,
+    aspect=1)
+ax2 = Axis(fig[1, 2], xlabel=L"\mathrm{Re}(s)", ylabel=L"\mathrm{Im}(s)",
+    title=Makie.lift(_j -> L"(b): $\mu = %$(μ[2])$, $t = %$(rpad(round(_t_vals_exact[_j, 2], digits = 3), 5, '0'))$", j),
+    titlealign=:left,
+    xticks=(-4:2:4, [L"%$s" for s in -4:2:4]),
+    yticks=(-4:2:4, [L"%$s" for s in -4:2:4]),
+    width=600,
+    height=600,
+    aspect=1)
+ax3 = Axis(fig[1, 3], xlabel=L"\mathrm{Re}(s)", ylabel=L"\mathrm{Im}(s)",
+    title=Makie.lift(_j -> L"(c): $\mu = %$(μ[3])$, $t = %$(rpad(round(_t_vals_exact[_j, 3], digits = 3), 5, '0'))$", j),
+    titlealign=:left,
+    xticks=(-4:2:4, [L"%$s" for s in -4:2:4]),
+    yticks=(-4:2:4, [L"%$s" for s in -4:2:4]),
+    width=600,
+    height=600,
+    aspect=1)
+
+contourf!(ax1, u, v, @lift(contour_real[$j, 1]), colorrange=(-1, 1), colormap=colors)
+contourf!(ax2, u, v, @lift(contour_real[$j, 2]), colorrange=(-1, 1), colormap=colors)
+contourf!(ax3, u, v, @lift(contour_real[$j, 3]), colorrange=(-1, 1), colormap=colors)
+
+contour!(ax1, u, v, @lift(contour_imag[$j, 1]), levels=@lift(sort(k[$j, 1])), linewidth=3, color=[:blue, :magenta, :red])
+contour!(ax2, u, v, @lift(contour_imag[$j, 2]), levels=@lift(sort(k[$j, 2])), linewidth=3, color=[:blue, :magenta, :red])
+contour!(ax3, u, v, @lift(contour_imag[$j, 3]), levels=@lift(sort(k[$j, 3])), linewidth=3, color=[:blue, :magenta, :red])
+
+scatter!(ax1, @lift([real(s₃[$j, 1])]), @lift([imag(s₃[$j, 1])]), markersize=12, color=:black)
+scatter!(ax1, @lift([real(s₃[$j, 1])]), @lift([imag(s₃[$j, 1])]), markersize=8, color=:white)
+scatter!(ax1, @lift([real(s₁[$j, 1]), real(s₂[$j, 1])]), @lift([imag(s₁[$j, 1]), imag(s₂[$j, 1])]), markersize=12, color=:black)
+scatter!(ax1, @lift([real(s₁[$j, 1]), real(s₂[$j, 1])]), @lift([imag(s₁[$j, 1]), imag(s₂[$j, 1])]), markersize=8, color=:red)
+scatter!(ax2, @lift([real(s₃[$j, 2])]), @lift([imag(s₃[$j, 2])]), markersize=12, color=:black)
+scatter!(ax2, @lift([real(s₃[$j, 2])]), @lift([imag(s₃[$j, 2])]), markersize=8, color=:white)
+scatter!(ax2, @lift([real(s₁[$j, 2]), real(s₂[$j, 2])]), @lift([imag(s₁[$j, 2]), imag(s₂[$j, 2])]), markersize=12, color=:black)
+scatter!(ax2, @lift([real(s₁[$j, 2]), real(s₂[$j, 2])]), @lift([imag(s₁[$j, 2]), imag(s₂[$j, 2])]), markersize=8, color=:red)
+scatter!(ax3, @lift([real(s₃[$j, 3])]), @lift([imag(s₃[$j, 3])]), markersize=12, color=:black)
+scatter!(ax3, @lift([real(s₃[$j, 3])]), @lift([imag(s₃[$j, 3])]), markersize=8, color=:white)
+scatter!(ax3, @lift([real(s₁[$j, 3]), real(s₂[$j, 3])]), @lift([imag(s₁[$j, 3]), imag(s₂[$j, 3])]), markersize=12, color=:black)
+scatter!(ax3, @lift([real(s₁[$j, 3]), real(s₂[$j, 3])]), @lift([imag(s₁[$j, 3]), imag(s₂[$j, 3])]), markersize=8, color=:red)
+
+j_rng = 2:outer_size
+secs = 15
+framerate = floor(Int64, outer_size / secs)
+record(fig, "paper/figures/saddle_point_contour_animation.mp4", j_rng; framerate=framerate) do _j
+    _j % 5 == 0 && @show _j
+    j[] = _j
+end
