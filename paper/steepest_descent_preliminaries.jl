@@ -192,9 +192,11 @@ contourf!(ax1, u, v, @lift(contour_real[$j, 1]), colorrange=(-1, 1), colormap=co
 contourf!(ax2, u, v, @lift(contour_real[$j, 2]), colorrange=(-1, 1), colormap=colors)
 contourf!(ax3, u, v, @lift(contour_real[$j, 3]), colorrange=(-1, 1), colormap=colors)
 
-contour!(ax1, u, v, @lift(contour_imag[$j, 1]), levels=@lift(sort(k[$j, 1])), linewidth=3, color=[:blue, :magenta, :red])
-contour!(ax2, u, v, @lift(contour_imag[$j, 2]), levels=@lift(sort(k[$j, 2])), linewidth=3, color=[:blue, :magenta, :red])
-contour!(ax3, u, v, @lift(contour_imag[$j, 3]), levels=@lift(sort(k[$j, 3])), linewidth=3, color=[:blue, :magenta, :red])
+for i in 1:3
+    contour!(ax1, u, v, @lift(contour_imag[$j, 1]), levels=@lift([k[$j, 1][i]]), linewidth=3, color=[:magenta, :red, :blue][i])
+    contour!(ax2, u, v, @lift(contour_imag[$j, 2]), levels=@lift([k[$j, 2][i]]), linewidth=3, color=[:magenta, :red, :blue][i])
+    contour!(ax3, u, v, @lift(contour_imag[$j, 3]), levels=@lift([k[$j, 3][i]]), linewidth=3, color=[:magenta, :red, :blue][i])
+end
 
 scatter!(ax1, @lift([real(s₃[$j, 1])]), @lift([imag(s₃[$j, 1])]), markersize=12, color=:black)
 scatter!(ax1, @lift([real(s₃[$j, 1])]), @lift([imag(s₃[$j, 1])]), markersize=8, color=:white)
@@ -209,10 +211,11 @@ scatter!(ax3, @lift([real(s₃[$j, 3])]), @lift([imag(s₃[$j, 3])]), markersize
 scatter!(ax3, @lift([real(s₁[$j, 3]), real(s₂[$j, 3])]), @lift([imag(s₁[$j, 3]), imag(s₂[$j, 3])]), markersize=12, color=:black)
 scatter!(ax3, @lift([real(s₁[$j, 3]), real(s₂[$j, 3])]), @lift([imag(s₁[$j, 3]), imag(s₂[$j, 3])]), markersize=8, color=:red)
 
+# Animate 
 j_rng = 2:outer_size
 secs = 15
 framerate = floor(Int64, outer_size / secs)
 record(fig, "paper/figures/saddle_point_contour_animation.mp4", j_rng; framerate=framerate) do _j
-    _j % 5 == 0 && @show _j
+    @show _j
     j[] = _j
 end
