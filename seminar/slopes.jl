@@ -3,7 +3,7 @@ using .BurgersEquation
 
 μ = [0.0, 0.05, 0.1, 1.0]
 t = LinRange(1e-6, 5.0, 1000)
-#slopes = maximum_slope(t, μ)
+slopes = maximum_slope(t, μ)
 indices, vals = findmaxima(slopes)
 fig = Figure(fontsize=38)
 ax = Axis(fig[1, 1], xlabel=L"t", ylabel=L"Maximum$ $ absolute slope",
