@@ -7,7 +7,7 @@ t = [0.1, 0.5, 1.0, tₛ]
 u = viscous_solution(x, y, t, μ)
 u_real = viscous_solution(x, t, μ)
 
-# Plot the solutions at μ = 0.1
+# Plot the solutions at μ = 0.1, 1.0
 time_labels = ["0.1", "0.5", "1", "t_s"]
 plot_layout = [[(1, 1), (1, 2)], [(1, 3), (1, 4)], [(2, 1), (2, 2)], [(2, 3), (2, 4)]]
 tails = [(0.2 + 1.4, 0.9) (1.0+1.2, 0.9) (1.8+1.0, 0.9) (2.0+1.3, 0.9);(0.4, 0.7) (1.0, 1.5) (1.8, 2.2) (2.0, 2.6)]
