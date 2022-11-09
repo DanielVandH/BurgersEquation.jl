@@ -2,6 +2,7 @@
     inviscid_solution(f, x::AbstractVector, t::Number; Δt=t / 100)
     inviscid_solution(f, x::AbstractVector, t::AbstractVector; Δt=maximum(t) / 100)
     inviscid_solution(f, x::Number, t::Number; Δt=maximum(t) / 100)
+    inviscid_solution(f, f′, x, y, t::Number; Δt=t / 100)
 
 Computes the solution to the inviscid Burgers equation `uₜ + uuₓ = 0` with initial 
 condition `u(x, 0) = f(x)` using the implicit solution `u(x, t) = f(x - ut)`. The 
@@ -9,14 +10,19 @@ solution at time `t` is found by using Newton's method, solving at times `0:Δt:
 
 # Arguments 
 - `f`: The initial condition `u(x, 0) = f(x)`.
-- `x`: The values of `x` on the real line to compute the solution ta.
+- `f′`: If computing the solution in the complex plane, you need to provide the derivative `f′` of `f`.
+- `x`: The values of `x` on the real line to compute the solution at.
+- `y`: If this argument is computed, then the solutions are given for `complex(x, y)`.
 - `t`: The time(s) to compute the solution at.
 
 # Keyword Arguments 
 - `Δt = maximum(t) / 100`: The spacing to use for breaking down the times between `0` and `t`.
 
 # Output 
-- `u`: The solution `u` such that `u[i]` is the solution at `x[i]` if `t` is a scalar, and `u[i, j]` is the solution at `x[i]`, `t[j]` if `t` is a vector.
+- `u`: The solution `u` such that `u[i]` is the solution at `x[i]` if `t` is a scalar, and `u[i, j]` is the solution at `x[i]`, `t[j]` if `t` is a vector. 
+
+If instead `y` is provided, then the solutions are for `u[i, j]` for the solution at `complex(x[i], y[j])` when `t` is a scalar, 
+and `u[i, j, k]` would be at `complex(x[i], y[j])` when `t = t[k]`.
 """
 function inviscid_solution end
 function inviscid_solution(f, x::AbstractVector, t::Number; Δt=t / 100)
@@ -25,7 +31,7 @@ function inviscid_solution(f, x::AbstractVector, t::Number; Δt=t / 100)
         t_vals = Δt:Δt:t
         for τ in t_vals
             F = u -> u .- f.(x .- u * τ)
-            newton_method(F, u; maxIters = 100)
+            newton_method(F, u; maxIters=100)
         end
     end
     return u
@@ -40,6 +46,30 @@ end
 function inviscid_solution(f, x::Number, t::Number; Δt=maximum(t) / 100)
     solns = inviscid_solution(f, [x], t; Δt)
     return solns[1]
+end
+function inviscid_solution(f, f′, x, y, t::Number; Δt=t / 100)
+    z = complex(x, y)
+    u = f(z)
+    if t > 0
+        t_vals = Δt:Δt:t
+        for τ in t_vals
+            F = u -> u - f(z - u * τ)
+            F′ = u -> 1 + τ * f′(z - u * τ)
+            u = newton_method(F, F′, u; maxIters=100)
+        end
+    end
+    return u
+end
+function inviscid_solution(f, f′, x::AbstractVector, y::AbstractVector, t::AbstractVector; Δt=t / 100)
+    u = zeros(ComplexF64, length(x), length(y), length(t))
+    for (i, X) in enumerate(x)
+        for (j, Y) in enumerate(y)
+            for (k, T) in enumerate(t)
+                u[i, j, k] = inviscid_solution(f, f′, X, Y, T; Δt=Δt[k])
+            end
+        end
+    end
+    return u
 end
 
 

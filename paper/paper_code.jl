@@ -23,3 +23,13 @@ include("aaa.jl")
 include("aaa_closest_poles.jl")
 # include("aaa_tracking_poles.jl") < --- See tracking_pole_saddle_mu.jl
 include("small_to_large_transition.jl")
+
+## Some extra figures added after review
+# 1/(1+x^2)^2
+include("initial_condition_1o1px2a2.jl")
+
+# 1/(1+x^2)^(1/2)
+include("initial_condition_1osqrt1px2.jl")
+
+# Inviscid solutions for 1/(1+x^2), 1/(1+x^2)^2, and 1/(1+x^2)^(1/2)
+include("inviscid_solutions.jl")
