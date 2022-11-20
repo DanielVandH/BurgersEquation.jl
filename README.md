@@ -97,25 +97,52 @@ The two main folders in the repository are `paper` and `src`.
   A full list of functions exported from the package (many are not exported, simply performing intermediate operations) can be seen using `names`:
   ```
   julia> names(BurgersEquation)
-  40-element Vector{Symbol}:
-  :BurgersEquation
-  :LINSPECER_12_J 
-  :LINSPECER_250_J
-  :complex_split_denominator
-  :cubic_caustic
-  :cubic_discriminant
-  :cubic_saddle_points
-  :f
-  :gauss_hermite
-  ⋮
-  :viscous_solution_large_time
-  :viscous_solution_large_time_Ψ
-  :viscous_solution_large_time_Ψ_roots_θ
-  :viscous_solution_large_time_Ψ_roots_ρ
-  :Φ₀
-  :Φ₀_pole
-  :Φ₀_split
-  :∫f
+  45-element Vector{Symbol}:
+    :BurgersEquation
+    :LINSPECER_12_J
+    :LINSPECER_250_J
+    :complex_split_denominator
+    :cubic_caustic
+    :cubic_discriminant
+    :cubic_saddle_points
+    :f
+    :gauss_hermite
+    :gauss_legendre_finite
+    :gauss_legendre_left_infinite
+    :gauss_legendre_right_infinite
+    :inviscid_singularities
+    :inviscid_solution
+    :landscape!
+    :large_ξ_roots_α
+    :large_ξ_roots_θ
+    :large_ξ_roots_ρ
+    :large_ξ_roots_ρ_function
+    :large_ξ_roots_ρ_function_deriv
+    :locate_pole
+    :maximum_slope
+    :newton_method
+    :parabolicU
+    :portrait!
+    :saddle_point_approximation_μ
+    :saddle_point_approximation_μ_split
+    :tracking_poles_aaa
+    :tracking_poles_exact
+    :tracking_poles_saddle
+    :tracking_poles_Φ₀
+    :tracking_poles_Ψ
+    :twopoint_linesearch
+    :tₛ
+    :viscous_solution
+    :viscous_solution_aaa
+    :viscous_solution_finite_diff
+    :viscous_solution_large_time
+    :viscous_solution_large_time_Ψ
+    :viscous_solution_large_time_Ψ_roots_θ
+    :viscous_solution_large_time_Ψ_roots_ρ
+    :Φ₀
+    :Φ₀_pole
+    :Φ₀_split
+    :∫f
   ```
   Not all of these functions are used in the paper, for example `numerical_solution.jl` is not used in the paper, but contains some methods for solving Burgers' equation numerically with finite differences by transforming to the heat equation first with the Cole-Hopf transformation. Similarly, `aaa.jl` is not used in the paper but you can use it instead for producing the AAA results (with less accuracy, unfortunately) with Julia rather than with Chebfun in MATLAB (described below). How we would do this is given in the commented code in the AAA files of the `/paper/` code, described below.
   
