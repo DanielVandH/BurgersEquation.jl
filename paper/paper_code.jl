@@ -8,6 +8,7 @@ using Peaks
 using DelimitedFiles
 using ArbNumerics
 using JLD2
+using ForwardDiff
 
 include("constants.jl")
 include("introduction.jl")
@@ -24,7 +25,7 @@ include("aaa_closest_poles.jl")
 # include("aaa_tracking_poles.jl") < --- See tracking_pole_saddle_mu.jl
 include("small_to_large_transition.jl")
 
-## Some extra figures added after review
+## Some extra figures and results added after review
 # 1/(1+x^2)^2
 include("initial_condition_1o1px2a2.jl")
 
@@ -32,4 +33,7 @@ include("initial_condition_1o1px2a2.jl")
 include("initial_condition_1osqrt1px2.jl")
 
 # Inviscid solutions for 1/(1+x^2), 1/(1+x^2)^2, and 1/(1+x^2)^(1/2)
-include("inviscid_solutions.jl")
+include("inviscid_solutions.jl") 
+
+# Enstrophy computations 
+include("enstrophy.jl")

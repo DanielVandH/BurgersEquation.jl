@@ -18,3 +18,8 @@ const μ_AAA = readdlm("paper/data/mu_AAA.dat")[1]
 # The constants below are obtained in the MATLAB script "burger_tracking_poles.m".
 const T_AAA_POLES = vec(readdlm("paper/data/T_AAA_POLES.dat"))
 const AAA_POLES = parse.(ComplexF64, readdlm("paper/data/AAA_POLES.dat"))
+
+# The constants below are obtained in the MATLAB script "enstrophy.m".
+const T_ENSTROPHY = vec(readdlm("paper/data/T_ENSTROPHY.dat"))
+const μ_ENSTROPHY = vec(readdlm("paper/data/mu_ENSTROPHY.dat"))
+const ENSTROPHY = readdlm("paper/data/ENSTROPHY.dat")
