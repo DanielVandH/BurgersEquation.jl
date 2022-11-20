@@ -103,3 +103,67 @@ portrait!(fig, x, y, u_vals[:, :, 4, 1], 1, 4;
 fig
 
 save("$FIGURES/small_to_large_transition_initial_condition_1osqrt1px2.$EXTENSION", fig)
+
+## Exact solution plots showing the solutions for small time at a larger array of μ values
+x = LinRange(-0.008, 0.008, 250)
+y = LinRange(0.990, 1.010, 250)
+μ1 = 2.0
+μ2 = 1.0
+μ3 = 0.5
+μ4 = 0.1
+μ5 = 0.1
+μ6 = 0.05
+μ7 = 0.01
+μ8 = 0.001
+μ = [μ1, μ2, μ3, μ4, μ5, μ6, μ7, μ8]
+t = 1e-6
+
+# Compute solution 
+u = viscous_solution(x, y, [t], μ; ic=3)
+
+# Plot the solutions at each μ
+fig = Figure(fontsize=38, resolution=(2449.9102f0, 1200.6704f0))
+plot_layout = [(1, 1), (1, 2), (1, 3), (1, 4), (2, 1), (2, 2), (2, 3), (2, 4)]
+reverse!(plot_layout)
+for j = 1:8
+    portrait!(fig, Float64.(x), Float64.(y), Complex{Float64}.(u[:, :, 1, j]), plot_layout[j][1][1], plot_layout[j][2]; nist=NIST,
+        title=L"(%$(ALPHABET[8-j+1])): $\mu = %$(Float64(μ[j]))$, $t = 10^{-6}$", titlealign=:left,
+        xlabel=L"x", ylabel=L"y", width=450, height=450,
+        xticks=([-0.005, 0.0, 0.005], [L"-0.005", L"0", L"0.005"]),
+        yticks=([0.995, 1.0, 1.005], [L"0.995", L"1", L"1.005"]))
+    xlims!(fig.content[end], -0.006, 0.006)
+    ylims!(fig.content[end], 0.994, 1.006)
+end
+save("$FIGURES/similarity_solutions_initial_condition_1osqrt1px2_even_smaller_mu_.$EXTENSION", fig) # These aren't similarity solutions, but we'll just keep the prefix to make it easier to compare figures later with the other small time results
+
+## Exact solution plots showing the solutions for small time at a larger array of μ values and a smaller time
+x = LinRange(-0.008, 0.008, 250)
+y = LinRange(0.990, 1.010, 250)
+μ1 = 2.0
+μ2 = 1.0
+μ3 = 0.5
+μ4 = 0.1
+μ5 = 0.1
+μ6 = 0.05
+μ7 = 0.01
+μ8 = 0.001
+μ = [μ1, μ2, μ3, μ4, μ5, μ6, μ7, μ8]
+t = 1e-9
+
+# Compute solution 
+u = viscous_solution(x, y, [t], μ; ic=3)
+
+# Plot the solutions at each μ
+fig = Figure(fontsize=38, resolution=(2449.9102f0, 1200.6704f0))
+plot_layout = [(1, 1), (1, 2), (1, 3), (1, 4), (2, 1), (2, 2), (2, 3), (2, 4)]
+reverse!(plot_layout)
+for j = 1:8
+    portrait!(fig, Float64.(x), Float64.(y), Complex{Float64}.(u[:, :, 1, j]), plot_layout[j][1][1], plot_layout[j][2]; nist=NIST,
+        title=L"(%$(ALPHABET[8-j+1])): $\mu = %$(Float64(μ[j]))$, $t = 10^{-9}$", titlealign=:left,
+        xlabel=L"x", ylabel=L"y", width=450, height=450,
+        xticks=([-0.005, 0.0, 0.005], [L"-0.005", L"0", L"0.005"]),
+        yticks=([0.995, 1.0, 1.005], [L"0.995", L"1", L"1.005"]))
+    xlims!(fig.content[end], -0.006, 0.006)
+    ylims!(fig.content[end], 0.994, 1.006)
+end
+save("$FIGURES/similarity_solutions_initial_condition_1osqrt1px2_even_smaller_mu_even_smaller_time.$EXTENSION", fig) # These aren't similarity solutions, but we'll just keep the prefix to make it easier to compare figures later with the other small time results
