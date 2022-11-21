@@ -30,6 +30,7 @@ ax = Axis(fig[1, 1], width=600, height=400,
     yticks=(0:0.5:2, [L"0", L"0.5", L"1", L"1.5", L"2"]))
 μ_idx = [1, 2, 5, 10, 20, 30, 50, 70, 100, 150, 200, 250]
 colors = cgrad(LINSPECER_12_J, μ[μ_idx]; categorical=false)
+lines!(ax, t, E[:, 1], color=colors[1], linestyle=:dash)
 [lines!(ax, t, E[:, j], color=colors[i+1]) for (i, j) in enumerate(μ_idx[2:end])]
 scatter!(ax, t[pt_idx], vals[pt_idx2], color=:red, markersize=4)
 xlims!(ax, 0, 5)

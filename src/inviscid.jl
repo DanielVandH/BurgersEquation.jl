@@ -72,7 +72,6 @@ function inviscid_solution(f, f′, x::AbstractVector, y::AbstractVector, t::Abs
     return u
 end
 
-
 """
     inviscid_singularities(t)
 
@@ -123,4 +122,35 @@ function inviscid_singularities(t)
     end
     new_idx = sortperm(i_idx)
     return u[new_idx], z[new_idx]
+end
+
+"""
+    exact_inviscid(x, t)
+
+Computes the inviscid solution with the initial condition `1/(1+x^2)`, returning the three 
+roots to `u = f(x - ut)`.
+"""
+function exact_inviscid(x, t)
+    a = t^2
+    b = -2 * t * x
+    c = 1 + x^2
+    d = -1.0
+    Δ₀ = b^2 - 3 * a * c
+    Δ₁ = 2 * b^3 - 9 * a * b * c + 27 * a^2 * d
+    C = cbrt((Δ₁ + sqrt(Δ₁^2 - 4Δ₀^3)) / 2)
+    if C == 0
+        C = cbrt((Δ₁ - sqrt(Δ₁^2 - 4Δ₀^3)) / 2)
+    end
+    if C ≠ 0
+        ξ₁ = -1 / (3a) * (b + C + Δ₀ / C)
+        ζ = (-1 + sqrt(3) * im) / 2
+        ξ₂ = -1 / (3a) * (b + ζ * C + Δ₀ / (ζ * C))
+        ξ₃ = -1 / (3a) * (b + ζ^2 * C + Δ₀ / (ζ^2 * C))
+        ξr = ξ₁, ξ₂, ξ₃
+    else
+        ξr = -b / (3a), -b / (3a), -b / (3a)
+    end
+    ξr_reals = real.(ξr)
+    i = argmin(ξr_reals)
+    return real(ξr[i])
 end

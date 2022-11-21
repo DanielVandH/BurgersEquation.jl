@@ -97,7 +97,7 @@ The two main folders in the repository are `paper` and `src`.
   A full list of functions exported from the package (many are not exported, simply performing intermediate operations) can be seen using `names`:
   ```
   julia> names(BurgersEquation)
-  45-element Vector{Symbol}:
+  46-element Vector{Symbol}:
     :BurgersEquation
     :LINSPECER_12_J
     :LINSPECER_250_J
@@ -105,6 +105,7 @@ The two main folders in the repository are `paper` and `src`.
     :cubic_caustic
     :cubic_discriminant
     :cubic_saddle_points
+    :exact_inviscid
     :f
     :gauss_hermite
     :gauss_legendre_finite

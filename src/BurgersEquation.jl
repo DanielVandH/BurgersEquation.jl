@@ -22,7 +22,7 @@ using DifferentialEquations
 using ArbNumerics
 
 include("rootfinding.jl");          export newton_method, twopoint_linesearch
-include("inviscid.jl");             export inviscid_solution, inviscid_singularities
+include("inviscid.jl");             export inviscid_solution, inviscid_singularities, exact_inviscid
 include("quadrature.jl");           export gauss_legendre_finite, gauss_legendre_left_infinite, gauss_legendre_right_infinite, gauss_hermite
 include("viscous.jl");              export viscous_solution
 include("plotting.jl");             export portrait!, landscape!, LINSPECER_12_J, LINSPECER_250_J
