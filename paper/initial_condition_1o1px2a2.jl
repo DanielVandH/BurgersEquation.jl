@@ -101,3 +101,38 @@ portrait!(fig, x, y, u_vals[:, :, 4, 1], 1, 4;
 fig
 
 save("$FIGURES/small_to_large_transition_initial_condition_1o1px2a2.$EXTENSION", fig)
+
+## Maximum slopes
+μ = [0.0, LinRange(1e-2, 0.5, 250)...]
+t = LinRange(1e-6, 5.0, 1000)
+slopes = maximum_slope(t, μ; ic = 3)
+indices, vals = findmaxima(slopes)
+tvals = Vector{Float64}([])
+peaks = Vector{Float64}([])
+pt_idx = Vector{Int64}([])
+pt_idx2 = Vector{Int64}([])
+breakdown_μ = []
+μ_idx = [1, 2, 5, 10, 20, 30, 50, 70, 100, 150, 200, 250]
+for (i, (idx, val)) in enumerate(zip(indices, vals))
+    if isnan(val)
+        push!(breakdown_μ, μ[i])
+    else
+        if (i ∈ μ_idx) && (i ≠ 1)
+            push!(pt_idx, idx)
+            push!(pt_idx2, i)
+        end
+        push!(tvals, t[idx])
+        push!(peaks, val)
+    end
+end
+breakdown_μ = breakdown_μ[1]
+
+fig = Figure(fontsize=33, resolution=(1700, 400))
+ax = Axis(fig[1, 1], xlabel=L"t", ylabel=L"Maximum$ $ absolute slope", title=L"(a):$ $ Slope analysis", titlealign=:left,
+    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),height=400,width=600,
+    yticks=([0.0, 2.0, 4.0, 6.0, 8.0], [L"0", L"2", L"4", L"6", L"8"]))
+colors = cgrad(LINSPECER_12_J, μ[μ_idx]; categorical=false)
+lines!(ax, t[1:5:283], slopes[1:5:283, 1], color=colors[1], linestyle=:dash)
+[lines!(ax, t, slopes[:, j], color=colors[i+1]) for (i, j) in enumerate(μ_idx[2:end])]
+scatter!(ax, t[pt_idx], vals[pt_idx2], color=:red, markersize=4)
+xlims!(ax, 0, t_max)
