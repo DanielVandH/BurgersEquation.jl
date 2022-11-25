@@ -9,6 +9,7 @@ using DelimitedFiles
 using ArbNumerics
 using JLD2
 using ForwardDiff
+using Optim
 
 include("constants.jl")
 include("introduction.jl")
@@ -33,7 +34,7 @@ include("initial_condition_1o1px2a2.jl")
 include("initial_condition_1osqrt1px2.jl")
 
 # Inviscid solutions for 1/(1+x^2), 1/(1+x^2)^2, and 1/(1+x^2)^(1/2)
-include("inviscid_solutions.jl") 
+include("inviscid_solutions.jl")
 
 # Enstrophy computations 
 include("enstrophy.jl")
