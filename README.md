@@ -4,6 +4,11 @@ This package contains code for reproducing the numerical results in our paper ht
 
 > Burgers' equation is a well-studied model in applied mathematics with connections to the Navier-Stokes equations in one spatial direction and traffic flow, for example. Following on from previous work, we analyse solutions to Burgers' equation in the complex plane, concentrating on the dynamics of the complex singularities and their relationship to the solution on the real line. For an initial condition with a simple pole in each of the upper- and lower-half planes, we apply formal asymptotics in the small- and large-time limits in order to characterise the initial and later motion of the singularities. The small-time limit highlights how infinitely many singularities are born at $t=0$ and how they orientate themselves to lie increasingly close to anti-Stokes lines in the far-field of the inner problem. This inner problem also reveals whether or not the closest singularity to the real axis moves toward the axis or away. For intermediate times, we use the exact solution, apply method of steepest descents, and implement the AAA approximation to track the complex singularities. Connections are made between the motion of the closest singularity to the real axis and the steepness of the solution on the real line. While Burgers' equation has an exact solution, we deliberately apply a mix of techniques in our analysis in an attempt to develop methodology that can be applied to other nonlinear partial differential equations that do not. 
 
+## Movie from the paper 
+![Animation of the saddle point contour](https://user-images.githubusercontent.com/95613936/206981155-b5461579-f525-4eeb-850a-717ab001883f.gif)
+
+The animation above shows the evolution of the saddle point contours over time for three different values of $\mu$, where the image shows $\operatorname{Re} h(s)$, where $h(s) = -\arctan(s)/2 - (z-s)^2/4t$, and the contour lines are the contour lines of $\operatorname{Im} h(s)$. The red points shown are the ones that we choose, according to our rule that the real parts are of equal size, and the white point is the other point. Notice that these chosen points never change over the entire animation.
+
 # Installation 
 You can install the package into Julia using 
 
