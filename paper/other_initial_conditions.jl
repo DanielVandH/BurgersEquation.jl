@@ -294,8 +294,8 @@ save("$FIGURES/similarity_solutions_initial_condition_1osqrt1px2.$EXTENSION", fi
 
 ## Exact solution plots for large time 
 # Larger mu 
-x = LinRange(-200.0, 200.0, 250)
-y = LinRange(0, 200.0, 250)
+x = LinRange(-150.0, 150.0, 250)
+y = LinRange(0, 150.0, 250)
 t = [100.0, 250.0, 500.0, 1000.0]
 μ = [1.0]
 u_vals = viscous_solution(x, y, t, μ; ic=3)
@@ -303,32 +303,32 @@ fig = Figure(fontsize=38, resolution=(2970.0f0, 551.9453f0))
 portrait!(fig, x, y, u_vals[:, :, 1, 1], 1, 1;
     xlabel=L"x", ylabel=L"y", title=L"(a): $t = 100$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 portrait!(fig, x, y, u_vals[:, :, 2, 1], 1, 2;
     xlabel=L"x", ylabel=L"y", title=L"(b): $t = 250$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 portrait!(fig, x, y, u_vals[:, :, 3, 1], 1, 3;
     xlabel=L"x", ylabel=L"y", title=L"(c): $t = 500$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 portrait!(fig, x, y, u_vals[:, :, 4, 1], 1, 4;
     xlabel=L"x", ylabel=L"y", title=L"(d): $t = 1000$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 save("$FIGURES/small_to_large_transition_initial_condition_1osqrt1px2.$EXTENSION", fig)
 
 # Smaller mu
-x = LinRange(-200.0, 200.0, 250)
-y = LinRange(0, 200.0, 250)
+x = LinRange(-150.0, 150.0, 250)
+y = LinRange(0, 150.0, 250)
 t = [100.0, 250.0, 500.0, 1000.0]
 μ = [0.1]
 u_vals = viscous_solution(x, y, t, μ; ic=3)
@@ -336,26 +336,26 @@ fig = Figure(fontsize=38, resolution=(2970.0f0, 551.9453f0))
 portrait!(fig, x, y, u_vals[:, :, 1, 1], 1, 1;
     xlabel=L"x", ylabel=L"y", title=L"(a): $t = 100$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 portrait!(fig, x, y, u_vals[:, :, 2, 1], 1, 2;
     xlabel=L"x", ylabel=L"y", title=L"(b): $t = 250$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 portrait!(fig, x, y, u_vals[:, :, 3, 1], 1, 3;
     xlabel=L"x", ylabel=L"y", title=L"(c): $t = 500$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 portrait!(fig, x, y, u_vals[:, :, 4, 1], 1, 4;
     xlabel=L"x", ylabel=L"y", title=L"(d): $t = 1000$",
     width=600, height=400,
-    xticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
-    yticks=([-200, -100, 0, 100, 200], [L"-200", L"-100", L"0", L"100", L"200"]),
+    xticks=([-150,-100,-50,0,50,100,150], [L"-150",L"-100",L"-50",L"0",L"50",L"100",L"150"]),
+    yticks=([0,50,100,150], [L"0",L"50",L"100",L"150"]),
     titlealign=:left)
 save("$FIGURES/small_to_large_transition_initial_condition_1osqrt1px2_smaller_mu.$EXTENSION", fig)
 
@@ -457,6 +457,7 @@ ax = Axis(fig[1, 2], width=600, height=400,
     title=L"(b):$ $ Enstrophy", titlealign=:left)
 μ_idx = [1, 2, 5, 10, 20, 30, 50, 70, 100, 150, 200, 250]
 ylims!(ax, 0, 2)
+xlims!(ax, 0,t_max)
 colors = cgrad(LINSPECER_12_J, μ[μ_idx]; categorical=false)
 lines!(ax, _t, E[:, 1], color=colors[1], linestyle=:dash)
 [lines!(ax, _t, E[:, j], color=colors[i+1]) for (i, j) in enumerate(μ_idx[2:end])]
