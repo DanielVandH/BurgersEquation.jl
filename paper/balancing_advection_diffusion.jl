@@ -2,6 +2,26 @@
 μ = [0.0, LinRange(1e-2, 0.5, 250)...]
 t = LinRange(1e-6, 5.0, 1000)
 slopes = maximum_slope(t, μ)
+f = z -> 1 / (1 + z^2)
+f′ = z -> -2z / (1 + z^2)^2
+x = LinRange(-10, 10, 2000)
+u = inviscid_solution(f, f′, x, t)
+uₓ = similar(u)
+for j in eachindex(t)
+    for i in eachindex(x)
+        uₓ[i, j] = f′(x[i] - u[i, j] * t[j]) / (1 + t[j] * f′(x[i] - u[i, j] * t[j]))
+    end
+end
+auₓ = abs.(uₓ)
+maxauₓ = zeros(length(t))
+for i in eachindex(maxauₓ)
+    @views maxauₓ[i] = maximum(auₓ[:, i])
+    if i > 1 && maxauₓ[i] < maxauₓ[i-1] - 0.7
+        maxauₓ[i:end] .= NaN
+        break
+    end
+end
+slopes[:, 1] .= maxauₓ
 indices, vals = findmaxima(slopes)
 tvals = Vector{Float64}([])
 peaks = Vector{Float64}([])
@@ -21,7 +41,7 @@ for (i, (idx, val)) in enumerate(zip(indices, vals))
         push!(peaks, val)
     end
 end
-breakdown_μ = breakdown_μ[1]
+breakdown_μ = breakdown_μ[1] == 0.0 ? breakdown_μ[2] : breakdown_μ[1]
 
 ## Tracking the closest pole
 t_min = 1e-6
@@ -33,7 +53,7 @@ t_vals, pole_locs = tracking_poles_exact(z₀, μ; t_max=t_max, t_min=t_min)
 # Real line
 fig = Figure(fontsize=33, resolution=(1700, 400))
 ax = Axis(fig[1, 1], xlabel=L"t", ylabel=L"Maximum$ $ absolute slope", title=L"(a):$ $ Slope analysis", titlealign=:left,
-    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),height=400,width=600,
+    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]), height=400, width=600,
     yticks=([0.0, 2.0, 4.0, 6.0, 8.0], [L"0", L"2", L"4", L"6", L"8"]))
 colors = cgrad(LINSPECER_12_J, μ[μ_idx]; categorical=false)
 lines!(ax, t[1:5:283], slopes[1:5:283, 1], color=colors[1], linestyle=:dash)
@@ -43,7 +63,7 @@ xlims!(ax, 0, t_max)
 
 # Closest pole
 ax = Axis(fig[1, 2], xlabel=L"t", ylabel=L"Distance$ $ to real line", title=L"(b):$ $ Pole locations", titlealign=:left,
-    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]),width=600,height=400,
+    xticks=([0.0, 5.0, 10.0], [L"0", L"5", L"10"]), width=600, height=400,
     yticks=([0.0, 2.0, 4.0, 6.0], [L"0", L"2", L"4", L"6"]))
 zt_vals = Vector{ComplexF64}([])
 for t in t_vals

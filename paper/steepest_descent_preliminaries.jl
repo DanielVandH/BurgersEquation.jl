@@ -215,7 +215,7 @@ scatter!(ax3, @lift([real(s₁[$j, 3]), real(s₂[$j, 3])]), @lift([imag(s₁[$j
 j_rng = 2:outer_size
 secs = 15
 framerate = floor(Int64, outer_size / secs)
-record(fig, "paper/figures/saddle_point_contour_animation.mp4", j_rng; framerate=framerate) do _j
+record(fig, "$FIGURES/saddle_point_contour_animation.mp4", j_rng; framerate=framerate) do _j
     @show _j
     j[] = _j
 end

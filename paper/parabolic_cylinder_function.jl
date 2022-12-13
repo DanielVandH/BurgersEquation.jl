@@ -54,9 +54,9 @@ end
     complex(4.4, 4.5), complex(5.0, 5.2), complex(5.6, 5.7),
     [sqrt(8n * Float64(μ3) * π) for n in 7:100]...]
 ξ4 = [complex(1.2, -0.1), complex(1.5, 0.5), complex(1.8, 1.0), complex(2.2, 1.4),
-    complex(2.4, 1.8), complex(3.2, 2.7),
+    complex(2.4, 1.8),
     complex(2.6, 2.0), complex(2.8, 2.2),
-    complex(2.8, 2.2), complex(3.0, 2.5), complex(3.4, 3.0),
+    complex(3.0, 2.5), complex(3.2, 2.7),  complex(3.4, 3.0),
     complex(3.6, 3.1), complex(3.7, 3.3), complex(3.9, 3.5),
     complex(4.025, 3.65), [sqrt(8n * Float64(μ4) * π) for n in 13:100]...]
 ξ = [ξ1, ξ2, ξ3, ξ4]
@@ -64,6 +64,10 @@ end
 ρ = 1.0:0.01:200.0
 θs = [large_ξ_roots_θ.(ρ, Float64(μ[i]), 1) for i in 1:4]
 ρs = [@. ρ * exp(im * θs[i]) for i in 1:4]
+ξs[4][1]=complex(NaN,NaN)
+ξs[4][7]=2.84+2.2825im
+ξs[4][12] = 3.728+3.346im
+push!(ξs[4], 5.230+4.935im)
 [lines!(fig.content[i], real(ρs[j]), imag(ρs[j]), color=:black, linewidth=3) for (i, j) in zip([1, 3, 5, 7], 1:4)]
 [scatter!(fig.content[i], real(ξs[j]), imag(ξs[j]), color=:white, markersize=j < 4 ? 8 : 6) for (i, j) in zip([1, 3, 5, 7], 1:4)]
 [xlims!(fig.content[i], -6, 6) for i in [1, 3, 5, 7]]

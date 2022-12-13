@@ -75,3 +75,41 @@ for k in eachindex(t)
     end
     save("$FIGURES/inviscid_solutions_for_each_initial_condition_landscape_row_$k.$EXTENSION", fig)
 end
+
+#### Real line 
+## Obtain the solutions 
+u₁_real = inviscid_solution(f₁, x, t1)
+u₂_real = inviscid_solution(f₂, x, t2)
+u₃_real = inviscid_solution(f₃, x, t3)
+u_real = [u₁_real, u₂_real, u₃_real]
+
+## Figures 
+time_labels = [
+    ["0.1", "0.5", "1", "8/27^{1/2}"],
+    ["0.1", "0.5", "0.75", "54/5^{5/2}"],
+    ["0.1", "0.5", "1", "27^{1/2}/2"]
+]
+ic_titles = [
+    "1/(1+x^2)",
+    "1/(1+x^2)^2",
+    "1/(1+x^2)^{1/2}"
+]
+plot_layout = [
+    [(1, 1), (1, 2), (1, 3), (1, 4)],
+    [(2, 1), (2, 2), (2, 3), (2, 4)],
+    [(3, 1), (3, 2), (3, 3), (3, 4)]
+]
+alphabets = [
+    ["a", "b", "c", "d"],
+    ["e", "f", "g", "h"],
+    ["i", "j", "k", "l"]
+]
+
+fig = Figure(fontsize=38, resolution=(2779.8281f0, 555.0031f0))
+for k in eachindex(t)
+    for j in eachindex(t[k])
+        ax = Axis(fig[plot_layout[k][j][1], plot_layout[k][j][2]])
+        lines!(ax, x, u_real[k][:, j])
+    end
+    #save("$FIGURES/inviscid_solutions_for_each_initial_condition_portrait_row_$k.$EXTENSION", fig)
+end

@@ -9,8 +9,8 @@ If `newton = true`, Newton's method is used, otherwise a two-point linesearch is
 exact solution.
 """
 function locate_pole end
-function locate_pole(z₀, t, μ, nodes, weights, glnodes, glweights; newton=true, kwargs...)
-    D = z -> complex_split_denominator(z, t, μ, nodes, weights, glnodes, glweights)
+function locate_pole(z₀, t, μ, nodes, weights, glnodes, glweights; newton=true, ic=1, kwargs...)
+    D = z -> complex_split_denominator(z, t, μ, nodes, weights, glnodes, glweights; ic=ic)
     z = [real(z₀), imag(z₀)]
     try
         newton ? newton_method(D, z; kwargs...) : twopoint_linesearch(D, z; kwargs...)
@@ -123,7 +123,7 @@ function tracking_poles end
     end
     return t_vals, pole_locs
 end
-@doc (@doc tracking_poles) function tracking_poles_exact(z, t, μ)
+@doc (@doc tracking_poles) function tracking_poles_exact(z, t, μ; ic=1)
     # Setup
     N = 20000
     Δt = t / N
@@ -133,11 +133,11 @@ end
     num_nodes = 250
     nodes, weights = gausshermite(num_nodes)
     glnodes, glweights = gausslegendre(num_nodes)
-    pole_locs[t_idx] = locate_pole(z, t, μ, nodes, weights, glnodes, glweights; newton=false)
+    pole_locs[t_idx] = locate_pole(z, t, μ, nodes, weights, glnodes, glweights; ic=ic, newton=false)
     # Track poles from t, t-Δt, t-2Δt, …, 0
     for j = t_idx:-1:2
         try
-            pole = locate_pole(pole_locs[j], t_vals[j-1], μ, nodes, weights, glnodes, glweights; newton=false)
+            pole = locate_pole(pole_locs[j], t_vals[j-1], μ, nodes, weights, glnodes, glweights; ic=ic, newton=false)
             if isnan(pole)
                 pole_locs[j-1] = pole_locs[j]
             else
@@ -147,8 +147,8 @@ end
             pole_locs[j-1] = pole_locs[j]#.= NaN + im * NaN
             #break
         end
-        if abs(pole_locs[j-1] - pole_locs[j]) > 0.1
-            pole_locs[j-1] = pole_locs[j]
+        if abs(pole_locs[j-1] - pole_locs[j]) > (ic == 1 ? 0.1 : 0.01)
+            pole_locs[j-1] = NaN
         end
     end
     return t_vals, pole_locs
@@ -161,15 +161,15 @@ end
     end
     return t_vals, pole_locs
 end
-@doc (@doc tracking_poles) function tracking_poles_exact(z::Vector{ComplexF64}, t::Vector{Float64}, μ::Vector{Float64})
+@doc (@doc tracking_poles) function tracking_poles_exact(z::Vector{ComplexF64}, t::Vector{Float64}, μ::Vector{Float64}; ic=1)
     t_vals = Vector{Vector{Float64}}(undef, length(z))
     pole_locs = Vector{Vector{ComplexF64}}(undef, length(z))
     for j in 1:length(z)
-        t_vals[j], pole_locs[j] = tracking_poles_exact(z[j], t[j], μ[j])
+        t_vals[j], pole_locs[j] = tracking_poles_exact(z[j], t[j], μ[j]; ic=ic)
     end
     return t_vals, pole_locs
 end
-@doc (@doc tracking_poles) function tracking_poles_exact(z₀::ComplexF64, μ::AbstractVector{Float64}; t_max=10.0, t_min=1e-6)
+@doc (@doc tracking_poles) function tracking_poles_exact(z₀::ComplexF64, μ::AbstractVector{Float64}; t_max=10.0, t_min=1e-6, ic=1)
     # Setup
     N = 1001
     Δt = (t_max - t_min) / (N - 1)
@@ -179,12 +179,12 @@ end
     glnodes, glweights = gausslegendre(num_nodes)
     pole_locs = Array{ComplexF64}(undef, length(μ), N) # pole_locs[i, j] is the estimated pole location at μ[i], t_vals[j]
     # Now refine the initial guess 
-    pole_locs[end, N] = locate_pole(z₀, t_max, μ[end], ghnodes, ghweights, glnodes, glweights; newton=false)
+    pole_locs[end, N] = locate_pole(z₀, t_max, μ[end], ghnodes, ghweights, glnodes, glweights; newton=false, ic=ic)
     # Now track the poles, one μ at a time. Need to start with μ[end]
     for j in (N-1):-1:1
         z₀_new = pole_locs[end, j+1]
         try
-            pole_locs[end, j] = locate_pole(z₀_new, t_vals[j], μ[end], ghnodes, ghweights, glnodes, glweights; newton=true, maxIters=500, τₐ=1e-2, τᵣ=1e-2)
+            pole_locs[end, j] = locate_pole(z₀_new, t_vals[j], μ[end], ghnodes, ghweights, glnodes, glweights; newton=true, ic=ic, maxIters=500, τₐ=1e-2, τᵣ=1e-2)
         catch
             #pole_locs[end, j:-1:1] .= NaN + im * NaN
             pole_locs[end, j] = z₀_new
@@ -196,11 +196,11 @@ end
     end
     # Now that we have these poles, we can move onto the next μ.
     for i in (length(μ)-1):-1:1
-        pole_locs[i, N] = locate_pole(pole_locs[i+1, N], t_max, μ[i], ghnodes, ghweights, glnodes, glweights; newton=true, maxIters=500, τₐ=1e-2, τᵣ=1e-2)
+        pole_locs[i, N] = locate_pole(pole_locs[i+1, N], t_max, μ[i], ghnodes, ghweights, glnodes, glweights; newton=true, ic=ic, maxIters=500, τₐ=1e-2, τᵣ=1e-2)
         for j in (N-1):-1:1
             z₀_new = pole_locs[i, j+1]
             try
-                pole_locs[i, j] = locate_pole(z₀_new, t_vals[j], μ[i], ghnodes, ghweights, glnodes, glweights; newton=true, maxIters=500, τₐ=1e-2, τᵣ=1e-2)
+                pole_locs[i, j] = locate_pole(z₀_new, t_vals[j], μ[i], ghnodes, ghweights, glnodes, glweights; newton=true, ic=ic, maxIters=500, τₐ=1e-2, τᵣ=1e-2)
                 if isnan(pole_locs[i, j])
                     #pole_locs[i, j:-1:1] .= NaN + im * NaN
                     #break

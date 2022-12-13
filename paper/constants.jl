@@ -1,7 +1,7 @@
 ## General constants 
 const EXTENSION = "png"
 const NIST = true
-const FIGURES = "paper/figures"
+const FIGURES = "paper/new_figures"
 const ALPHABET = join('a':'z')
 
 # The constants below are obtained in the MATLAB script "burger_aaa.m".
@@ -23,3 +23,9 @@ const AAA_POLES = parse.(ComplexF64, readdlm("paper/data/AAA_POLES.dat"))
 const T_ENSTROPHY = vec(readdlm("paper/data/T_ENSTROPHY.dat"))
 const μ_ENSTROPHY = vec(readdlm("paper/data/mu_ENSTROPHY.dat"))
 const ENSTROPHY = readdlm("paper/data/ENSTROPHY.dat")
+const T_ENSTROPHY_IC2 = vec(readdlm("paper/data/T_ENSTROPHY_1O1PX2A2.dat"))
+const μ_ENSTROPHY_IC2 = vec(readdlm("paper/data/mu_ENSTROPHY_1O1PX2A2.dat"))
+const ENSTROPHY_IC2 = readdlm("paper/data/ENSTROPHY_1O1PX2A2.dat")
+const T_ENSTROPHY_IC3 = vec(readdlm("paper/data/T_ENSTROPHY_1OSQRT1PX2.dat"))
+const μ_ENSTROPHY_IC3 = vec(readdlm("paper/data/mu_ENSTROPHY_1OSQRT1PX2.dat"))
+const ENSTROPHY_IC3 = readdlm("paper/data/ENSTROPHY_1OSQRT1PX2.dat")

@@ -326,6 +326,20 @@ function viscous_solution(x::T, y::T, t, μ::T, nodes, weights, glnodes, glweigh
         I₁ = viscous_solution_numerator_3(x, y, t, μ, nodes, weights, glnodes, glweights)
         I₂ = viscous_solution_denominator_3(x, y, t, μ, nodes, weights, glnodes, glweights)
         return -2sqrt(μ / t) * I₁ / I₂
+    elseif ic isa Tuple
+        β = ic[2]
+        if t > 0
+            # Evaluate numerator  
+            intu0 = s -> s * HypergeometricFunctions._₂F₁(0.5, β, 1.5, -s^2)
+            f = s -> s * exp(-0.5 / μ * intu0(x + im * y + 2sqrt(μ * t) * s))
+            I₁ = gauss_hermite(f, nodes, weights)
+            # Evaluate denominator
+            f = s -> exp(-0.5 / μ * intu0(x + im * y + 2sqrt(μ * t) * s))
+            I₂ = gauss_hermite(f, nodes, weights)
+            return -2sqrt(μ / t) * I₁ / I₂
+        else
+            return 1 / (1 + (x + im * y)^2)^β
+        end
     end
 end
 function viscous_solution(x, t::T, μ::T, nodes, weights; ic=1) where {T}
@@ -365,6 +379,39 @@ function viscous_solution(x, t::T, μ::T, nodes, weights; ic=1) where {T}
         else
             return 1 / (1 + x^2)^(1 / 2)
         end
+    elseif ic == 4
+        if t > 0
+            ## LHS
+            gL = s -> real(2im * atanh(sqrt(Complex(s))))
+            fLnum = s -> (x - s) / t * exp(-1 / (2μ) * (gL(s) + (x - s)^2 / (2t)))
+            fLden = s -> exp(-1 / (2μ) * (gL(s) + (x - s)^2 / (2t)))
+            ILnum = gauss_legendre_left_infinite(fLnum, 0.0, nodes, weights)
+            ILden = gauss_legendre_left_infinite(fLden, 0.0, nodes, weights)
+            ## RHS 
+            gR = s -> 2atan(s^(1 / 2))
+            fRnum = s -> (x - s) / t * exp(-1 / (2μ) * (gR(s) + (x - s)^2 / (2t)))
+            fRden = s -> exp(-1 / (2μ) * (gR(s) + (x - s)^2 / (2t)))
+            IRnum = gauss_legendre_right_infinite(fRnum, 0.0, nodes, weights)
+            IRden = gauss_legendre_right_infinite(fRden, 0.0, nodes, weights)
+            ## Combine 
+            return (ILnum + IRnum) / (ILden + IRden)
+        else
+            return 1 / (abs(x)^(1 / 2) * (1 + abs(x)))
+        end
+    elseif ic isa Tuple
+        β = ic[2]
+        if t > 0
+            # Evaluate numerator  
+            intu0 = s -> s * HypergeometricFunctions._₂F₁(0.5, β, 1.5, -s^2)
+            f = s -> s * exp(-0.5 / μ * intu0(x + 2sqrt(μ * t) * s))
+            I₁ = gauss_hermite(f, nodes, weights)
+            # Evaluate denominator
+            f = s -> exp(-0.5 / μ * intu0(x + 2sqrt(μ * t) * s))
+            I₂ = gauss_hermite(f, nodes, weights)
+            return -2sqrt(μ / t) * I₁ / I₂
+        else
+            return 1 / (1 + x^2)^β
+        end
     end
 end
 function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::AbstractVector; num_nodes=250, ic=1)
@@ -384,6 +431,9 @@ function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVecto
                             u[i, j, k, ℓ] = 1 / (1 + (X + im * Y)^2)^2
                         elseif ic == 3
                             u[i, j, k, ℓ] = 1 / (1 + (X + im * Y)^2)^(1 / 2)
+                        elseif ic isa Tuple
+                            β = ic[2]
+                            u[i, j, k, ℓ] = 1 / (1 + (X + im * Y)^2)^β
                         end
                     end
                 end
@@ -392,8 +442,7 @@ function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVecto
     end
     return u
 end
-function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::Float64; ic=1)
-    num_nodes = ic == 1 ? 250 : 1000
+function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVector, μ::Float64; ic=1, num_nodes=ic == 1 ? 250 : 1000)
     nodes, weights = gausshermite(num_nodes)
     glnodes, glweights = gausslegendre(num_nodes)
     u = Array{ComplexF64}(zeros(length(x), length(y), length(t)))
@@ -409,6 +458,9 @@ function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVecto
                         u[i, j, k] = 1 / (1 + (X + im * Y)^2)^2
                     elseif ic == 3
                         u[i, j, k] = 1 / (1 + (X + im * Y)^2)^(1 / 2)
+                    elseif ic isa Tuple
+                        β = ic[2]
+                        u[i, j, k] = 1 / (1 + (X + im * Y)^2)^β
                     end
                 end
             end
@@ -416,8 +468,7 @@ function viscous_solution(x::AbstractVector, y::AbstractVector, t::AbstractVecto
     end
     return u
 end
-function viscous_solution(x::AbstractVector, y::AbstractVector, t::Float64, μ::Float64; ic=1)
-    num_nodes = ic == 1 ? 250 : 1000
+function viscous_solution(x::AbstractVector, y::AbstractVector, t::Float64, μ::Float64; ic=1, num_nodes=ic == 1 ? 250 : 1000)
     nodes, weights = gausshermite(num_nodes)
     glnodes, glweights = gausslegendre(num_nodes)
     u = Array{ComplexF64}(zeros(length(x), length(y)))
@@ -432,15 +483,21 @@ function viscous_solution(x::AbstractVector, y::AbstractVector, t::Float64, μ::
                     u[i, j] = 1 / (1 + (X + im * Y)^2)^2
                 elseif ic == 3
                     u[i, j] = 1 / (1 + (X + im * Y)^2)^(1 / 2)
+                elseif ic isa Tuple
+                    β = ic[2]
+                    u[i, j] = 1 / (1 + (X + im * Y)^2)^β
                 end
             end
         end
     end
     return u
 end
-function viscous_solution(x::AbstractVector, t::AbstractVector, μ::AbstractVector; ic=1)
-    num_nodes = ic == 1 ? 250 : 1000
-    nodes, weights = gausshermite(num_nodes)
+function viscous_solution(x::AbstractVector, t::AbstractVector, μ::AbstractVector; ic=1, num_nodes=ic == 1 ? 250 : 1000)
+    if ic ≠ 4
+        nodes, weights = gausshermite(num_nodes)
+    else#if ic == 4
+        nodes, weights = gausslegendre(num_nodes)
+    end
     u = zeros(length(x), length(t), length(μ))
     for (ℓ, m) in enumerate(μ)
         for (k, T) in enumerate(t)
@@ -454,6 +511,11 @@ function viscous_solution(x::AbstractVector, t::AbstractVector, μ::AbstractVect
                         u[i, k, ℓ] = 1 / (1 + X^2)^2
                     elseif ic == 3
                         u[i, k, ℓ] = 1 / (1 + X^2)^(1 / 2)
+                    elseif ic == 4
+                        u[i, k, ℓ] = 1 / (abs(X)^(1 / 2) * (1 + abs(X)))
+                    elseif ic isa Tuple
+                        β = ic[2]
+                        u[i, k, ℓ] = 1 / (1 + X^2)^β
                     end
                 end
             end

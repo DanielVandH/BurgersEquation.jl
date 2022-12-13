@@ -114,9 +114,9 @@ function large_ξ_roots_ρ_function(ρ, μ, quadrant)
         return RHS - LHS
     end
 end
-function large_ξ_roots_ρ(ξ, μ, quadrant=1)
+function large_ξ_roots_ρ(ξ, μ, quadrant=1;τₐ=1e-8, τᵣ=1e-8, maxIters=500)
     f = x -> large_ξ_roots_ρ_function(x, μ, quadrant)
-    ρ = newton_method(f, ξ)
+    ρ = newton_method(f, ξ; τₐ,τᵣ,maxIters)
     ϑ = large_ξ_roots_θ(ρ, μ, quadrant)
     ζ = ρ * exp(im * ϑ)
     return ζ

@@ -38,4 +38,3 @@ ylims!(ax, 0, 2)
 Colorbar(fig[1, 2], limits=(0.0, 0.5), colormap=colors, label=L"\mu", vertical=true,
     ticks=([0.0, 0.1, 0.2, 0.3, 0.4, 0.5], [L"0.0", L"0.1", L"0.2", L"0.3", L"0.4", L"0.5"]))
 save("$FIGURES/enstrophy_plot.$EXTENSION", fig)
-

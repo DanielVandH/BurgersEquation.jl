@@ -23,6 +23,8 @@ solution at time `t` is found by using Newton's method, solving at times `0:Δt:
 
 If instead `y` is provided, then the solutions are for `u[i, j]` for the solution at `complex(x[i], y[j])` when `t` is a scalar, 
 and `u[i, j, k]` would be at `complex(x[i], y[j])` when `t = t[k]`.
+
+Yes, there are better ways to do everything here via multiple dispatch.
 """
 function inviscid_solution end
 function inviscid_solution(f, x::AbstractVector, t::Number; Δt=t / 100)
@@ -60,12 +62,42 @@ function inviscid_solution(f, f′, x, y, t::Number; Δt=t / 100)
     end
     return u
 end
+function inviscid_solution(f, f′, x::Number, t::Number; Δt=t / 100)
+    u = f(x)
+    if t > 0
+        t_vals = Δt:Δt:t
+        for τ in t_vals
+            F = u -> u - f(x - u * τ)
+            F′ = u -> 1 + τ * f′(x - u * τ)
+            u = newton_method(F, F′, u; maxIters=100)
+        end
+    end
+    return u
+end
 function inviscid_solution(f, f′, x::AbstractVector, y::AbstractVector, t::AbstractVector; Δt=t / 100)
     u = zeros(ComplexF64, length(x), length(y), length(t))
     for (i, X) in enumerate(x)
         for (j, Y) in enumerate(y)
             for (k, T) in enumerate(t)
                 u[i, j, k] = inviscid_solution(f, f′, X, Y, T; Δt=Δt[k])
+            end
+        end
+    end
+    return u
+end
+function inviscid_solution(f::Function, f′::Function, x::AbstractVector, t::AbstractVector)
+    u = zeros(length(x), length(t))
+    u[:, 1] .= f.(x)
+    for j in 2:lastindex(t)
+        τ = t[j]
+        prev_u = @views u[:, j-1]
+        for i in eachindex(x)
+            F = u -> u - f(x[i] - u * τ)
+            F′ = u -> 1.0 + τ * f′(x[i] - u .* τ)
+            try
+                u[i, j] = newton_method(F, F′, prev_u[i])
+            catch
+                u[i, j] = NaN
             end
         end
     end
@@ -154,3 +186,4 @@ function exact_inviscid(x, t)
     i = argmin(ξr_reals)
     return real(ξr[i])
 end
+

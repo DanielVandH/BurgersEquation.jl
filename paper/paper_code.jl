@@ -10,6 +10,7 @@ using ArbNumerics
 using JLD2
 using ForwardDiff
 using Optim
+using HypergeometricFunctions
 
 include("constants.jl")
 include("introduction.jl")
@@ -27,14 +28,8 @@ include("aaa_closest_poles.jl")
 include("small_to_large_transition.jl")
 
 ## Some extra figures and results added after review
-# 1/(1+x^2)^2
-include("initial_condition_1o1px2a2.jl")
-
-# 1/(1+x^2)^(1/2)
-include("initial_condition_1osqrt1px2.jl")
-
-# Inviscid solutions for 1/(1+x^2), 1/(1+x^2)^2, and 1/(1+x^2)^(1/2)
-include("inviscid_solutions.jl")
+# Other initial conditions
+include("other_initial_conditions.jl")
 
 # Enstrophy computations 
 include("enstrophy.jl")
