@@ -231,6 +231,8 @@ ylims!(ax, 0, 3)
 Colorbar(fig[1, 3], limits=(0.0, 0.5), colormap=colors, label=L"\mu", vertical=true,
     ticks=([0.0, 0.1, 0.2, 0.3, 0.4, 0.5], [L"0.0", L"0.1", L"0.2", L"0.3", L"0.4", L"0.5"]))
 resize_to_layout!(fig)
+fig.content[1].yticks = (0:3:9, [L"%$s" for s in 0:3:9])
+ylims!(fig.content[1], 0, 9)
 save("$FIGURES/slope_enstrophy_plot_1o1px2a2.$EXTENSION", fig)
 
 ###########################################################################
