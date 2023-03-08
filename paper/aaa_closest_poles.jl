@@ -22,10 +22,10 @@ portrait!(fig, X_AAA, Y_AAA, u, 1, 2; nist=NIST,
     xticks=([-4.0, -2.0, 0.0, 2.0, 4.0], [L"-4", L"-2", L"0", L"2", L"4"]),
     yticks=([.0, 2.0, 4.0], [L"0", L"2", L"4"]))
 
-text!(fig.content[1], L"r_0^{(1)}", position=(0.7, 0.4), color=:white, textsize=36)
-text!(fig.content[1], L"r_0^{(2)}", position=(-2.3, 2.0), color=:black, textsize=36)
-text!(fig.content[2], L"z_0^{(1)}", position=(1.0, 0.4), color=:white, textsize=36)
-text!(fig.content[2], L"z_0^{(2)}", position=(-2.0, 1.9), color=:black, textsize=36)
+text!(fig.content[1], L"r_0^{(1)}", position=(0.7, 0.4), color=:white, fontsize=36)
+text!(fig.content[1], L"r_0^{(2)}", position=(-2.3, 2.0), color=:black, fontsize=36)
+text!(fig.content[2], L"z_0^{(1)}", position=(1.0, 0.4), color=:white, fontsize=36)
+text!(fig.content[2], L"z_0^{(2)}", position=(-2.0, 1.9), color=:black, fontsize=36)
 
 resize_to_layout!(fig)
 

@@ -22,9 +22,9 @@ for j in 1:length(T_AAA)
         yticks=([0.0, 2.0, 4.0], [L"0", L"2", L"4"]))
     landscape!(fig, X_AAA, Y_AAA, U_AAA[j], plot_layout[j][2][1], plot_layout[j][2][2]; nist=NIST,
         title=L"(%$(alphabets[j][2])): $t = %$(time_labels[j])$", titlealign=:left, zlims=(0, 4),
-        xticks=([-4.0, 0.0, 4.0], [L"-4", L"0", L"4"]),
-        yticks=([0.0, 2.0, 4.0], [L"0", L"2", L"4"]),
-        zticks=([0.0, 2, 4], [L"0", L"2", L"4"]),
+        xticks=([-4.0, 0.0, 4.0], ["-4", "0", "4"]),
+        yticks=([0.0, 2.0, 4.0], ["0", "2", "4"]),
+        zticks=([0.0, 2, 4], ["0", "2", "4"]),
         width = 600, height = 400,
         zlabel=L"|r(z, t)|")
     lines!(fig.content[end], X_AAA, zeros(length(X_AAA)), U_AAA[j][:, 1], color=:black, linewidth=5)

@@ -31,10 +31,10 @@ ax = Axis(fig[1, 2], width=400, height=400,
     titlealign=:left)
 _colors = [:red, :black, :blue, :purple]
 [scatter!(ax, [μ[idx[i]]], [imag(rootsᵢ[j][idx[i]])], color=_colors[j], markersize=4) for j in 1:4, i in 1:length(idx)]#not going to bother using lines! for this one
-text!(ax, L"Quadrant $1$", position=(5, 13), color=:black, textsize=36.4, rotation = 0.3)
-text!(ax, L"Quadrant $2$", position=(7, 4.5), color=:black, textsize=36.4, rotation = 0.3)
-text!(ax, L"Quadrant $3$", position=(4, -17), color=:black, textsize=36.4, rotation = -0.33)
-text!(ax, L"Quadrant $4$", position=(7, -9.7), color=:black, textsize=36.4, rotation = -0.33)
+text!(ax, L"Quadrant $1$", position=(5, 13), color=:black, fontsize=36.4, rotation = 0.3)
+text!(ax, L"Quadrant $2$", position=(7, 4.5), color=:black, fontsize=36.4, rotation = 0.3)
+text!(ax, L"Quadrant $3$", position=(4, -17), color=:black, fontsize=36.4, rotation = -0.33)
+text!(ax, L"Quadrant $4$", position=(7, -9.7), color=:black, fontsize=36.4, rotation = -0.33)
 
 Colorbar(fig[1, 3], limits=(0.0, 25.0), colormap=colors, label=L"\mu", vertical=true,
     ticks=([0.0, 5.0, 10.0, 15.0, 20.0, 25.0], [L"0", L"5", L"10", L"15", L"20", L"25"]))

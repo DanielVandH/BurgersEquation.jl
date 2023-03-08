@@ -90,17 +90,17 @@ vals2 = viscous_solution_large_time_Ψ(x, μ)
 landscape!(fig, x, y, vals[:, :, 1], 1, 5, nist=NIST,
     xlabel=L"\mathrm{Re}(\eta)", ylabel=L"\mathrm{Im}(\eta)", zlabel=L"|\Psi(\eta)|",
     title=L"(c): $\mu = 0.1$", titlealign=:left, zlims=(0, 10),
-    xticks=([-15, 0, 15], [L"-15", L"0", L"15"]),
-    yticks=([0, 5, 10, 15], [L"0", L"5", L"10", L"15"]),
-    zticks=([0, 5, 10], [L"0", L"5", L"10"]),width=600,
+    xticks=([-15, 0, 15], ["-15", "0", "15"]),
+    yticks=([0, 5, 10, 15], ["0", "5", "10", "15"]),
+    zticks=([0, 5, 10], ["0", "5", "10"]),width=600,
     height=400)
 lines!(fig.content[end], x, zeros(length(x)), vals2[:, 1], color=:black, linewidth=5)
 landscape!(fig, x, y, vals[:, :, 2], 2, 5, nist=NIST,
     xlabel=L"\mathrm{Re}(\eta)", ylabel=L"\mathrm{Im}(\eta)", zlabel=L"|\Psi(\eta)|",
     title=L"(f): $\mu = 1$", titlealign=:left, zlims=(0, 10),
-    xticks=([-15, 0, 15], [L"-15", L"0", L"15"]),
-    yticks=([0, 5, 10, 15], [L"0", L"5", L"10", L"15"]),
-    zticks=([0, 5, 10], [L"0", L"5", L"10"]),width=600,
+    xticks=([-15, 0, 15], ["-15", "0", "15"]),
+    yticks=([0, 5, 10, 15], ["0", "5", "10", "15"]),
+    zticks=([0, 5, 10], ["0", "5", "10"]),width=600,
     height=400)
 lines!(fig.content[end], x, zeros(length(x)), vals2[:, 2], color=:black, linewidth=5)
 

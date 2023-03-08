@@ -21,8 +21,8 @@ lines!(ax, xc, caustic_vals1, color=:black, linewidth=6)
 lines!(ax, xc, caustic_vals2, color=:black, linewidth=6)
 xlims!(ax, -5, 5)
 ylims!(ax, 0, 5)
-text!(ax, L"\Delta < 0", position=(-2.0, 2.0), color=:white, textsize=36.4)
-text!(ax, L"\Delta > 0", position=(3.0, 4.0), color=:white, textsize=36.4)
+text!(ax, L"\Delta < 0", position=(-2.0, 2.0), color=:white, fontsize=36.4)
+text!(ax, L"\Delta > 0", position=(3.0, 4.0), color=:white, fontsize=36.4)
 scatter!(ax, [sqrt(3)], [tₛ], color=:black, markersize=9)
 scatter!(ax, [sqrt(3)], [tₛ], color=:white, markersize=6)
 
@@ -73,13 +73,13 @@ arrows!(ax, X[:, 1], Y[:, 1], X[:, 2] .- X[:, 1], Y[:, 2] .- Y[:, 1], color=:whi
 ax = Axis3(ga[1, 1], xlabel=L"\mathrm{Re}(s)", ylabel=L"\mathrm{Im}(s)",
     zlabel=L"\mathrm{Re}(h)", title=L"(a)$:$ Surface", titlealign=:left,
     azimuth=12.0, elevation=0.65,
-    xticks=([-2.0, -1.0, 0.0, 1.0, 2.0], [L"-2", L"-1", L"0", L"1", L"2"]),
-    yticks=([-2.0, -1.0, 0.0, 1.0, 2.0], [L"-2", L"-1", L"0", L"1.", L"2"]),
-    zticks=([-1.0, 0.0, 1.0], [L"-1", L"0", L"1"]))
+    xticks=([-2.0, -1.0, 0.0, 1.0, 2.0], ["-2", "-1", "0", "1", "2"]),
+    yticks=([-2.0, -1.0, 0.0, 1.0, 2.0], ["-2", "-1", "0", "1.", "2"]),
+    zticks=([-1.0, 0.0, 1.0], ["-1", "0", "1"]))
 surface!(ax, u, v, z, color=z, colorrange=(-1, 1), colormap=colors, overdraw=true)
 C = contours(u, v, z₂, sort(k))
 contour_colors = [:blue, :magenta, :red]
-for (k, cl) in enumerate(levels(C))
+for (k, cl) in enumerate(Contour.levels(C))
     for line in Contour.lines(cl)
         us, vs = coordinates(line)
         lines!(ax, us, vs, ℜh.(us, vs), color=contour_colors[k], overdraw=false)

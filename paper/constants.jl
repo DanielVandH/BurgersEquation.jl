@@ -2,6 +2,8 @@
 const EXTENSION = "png"
 const NIST = true
 const FIGURES = "paper/new_figures"
+const EXTRAS = "paper/lt_data"
+const RUN_EXTRAS = false
 const ALPHABET = join('a':'z')
 
 # The constants below are obtained in the MATLAB script "burger_aaa.m".

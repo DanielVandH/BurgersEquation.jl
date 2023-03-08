@@ -49,7 +49,6 @@ You may also need to install my `BaryRational.jl` fork,
 ```
 using Pkg
 Pkg.add(url = "https://github.com/DanielVandH/BaryRational.jl")
-end
 ```
 although none of this code is actually called directly (but you can call it if you want to, see the `/src/` description below).
 
@@ -155,7 +154,7 @@ The two main folders in the repository are `paper` and `src`.
   
 - `/paper/`
 
-  This folder contains the code that actually produces the results in the paper. The main script in this filder is `paper_code.jl` which actually runs all the other scripts. In order of how we include the files in `paper_code.jl`, a description of each script is as follows:
+  This folder contains the code that actually produces the results in the paper. The main script in this filder is `paper_code.jl` which actually runs all the other scripts. Note that for the figures created in this code, LaTeX rendering has since been disabled for axis ticks in three-dimensional axes, avoiding the need to install my personal fork of Makie.jl that fixes this issue (in case you end up wondering why there are some differences from the paper). In order of how we include the files in `paper_code.jl`, a description of each script is as follows:
     - `constants.jl`: This is a script which defines some constants used in the code. The first constants are just setting up values for saving figures. The second set of constants comes from the MATLAB script `burger_aaa.m` which we use to make some AAA plots. The constants are given here so that you do not need MATLAB to look at the plots. Corresponding Julia code is given in `aaa.jl`, but commented out. The third set of constants comes from the MATLAB script `burger_tracking_poles.m` which we use to obtain the data for tracking poles with the AAA algorithm. A Julia version for obtaining this data is given in `aaa_tracking_poles.jl`, but commented out. The last set of constants give values for the enstrophy $E(t)$ for Burgers' equation, computed from the MATLAB script `enstrophy.m`. All the data from these files is saved in `/paper/data/`. The MATLAB script `fix_i.m` is used to change `i` to `im` in the data files.
     - `introduction.jl`: This contains code for producing the figure in our introduction. In particular, a figure is produced which plots the inviscid solution at the shock time and the viscous solution at this shock time and other times.
     - `exact_solution.jl`: This contains code for plotting the exact solution.

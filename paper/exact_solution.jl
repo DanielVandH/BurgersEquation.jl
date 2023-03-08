@@ -27,15 +27,15 @@ for k = 1:length(μ)
         arrows!(fig.content[end], [tails[k, j][1]], [tails[k, j][2]],
             -[vector_components[k, j][2]], -[vector_components[k, j][1]],
             color=:white, linewidth=4, arrowsize=14)
-        text!(fig.content[end], L"s^{(1)}_0", position=tails[k, j] .+ (k == 1) .* (0.0, -0.8), color=k == 1 ? :white : :white, textsize=48)
+        text!(fig.content[end], L"s^{(1)}_0", position=tails[k, j] .+ (k == 1) .* (0.0, -0.8), color=k == 1 ? :white : :white, fontsize=48)
         arrows!(fig.content[end], [zero_tails[k, j][1]], [zero_tails[k, j][2]],
             -[zero_components[k, j][2]], -[zero_components[k, j][1]],
             color=:black, linewidth=4, arrowsize=14)
         landscape!(fig, x, y, u[:, :, j, k], plot_layout[j][2][1], plot_layout[j][2][2]; nist=NIST,
             title=L"(%$(alphabets[j][2])): $t = %$(time_labels[j])$", titlealign=:left, zlims=(0, 3),
-            xticks=([-4.0, 0.0, 4.0], [L"-4", L"0", L"4"]),
-            yticks=([0.0, 2.0, 4.0], [L"0", L"2", L"4"]),
-            zticks=([0.0, 1, 2, 3], [L"0", L"1", L"2", L"3"]),
+            xticks=([-4.0, 0.0, 4.0], ["-4", "0", "4"]),
+            yticks=([0.0, 2.0, 4.0], ["0", "2", "4"]),
+            zticks=([0.0, 1, 2, 3], ["0", "1", "2", "3"]),
             width=600, height=400)
         lines!(fig.content[end], x, zeros(length(y)), u_real[:, j, k], color=:black, linewidth=5)
     end
