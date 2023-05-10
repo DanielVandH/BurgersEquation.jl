@@ -109,6 +109,7 @@ save("$FIGURES/similarity_solutions.$EXTENSION", fig)
 μ2 = 1.0
 μ3 = 0.5
 μ4 = 0.1
+μ = [μ1, μ2, μ3, μ4]
 ξ1 = [complex(1.9, 4.1), [sqrt(8n * Float64(μ1) * π) for n in 2:100]...]
 ξ2 = [complex(1.75, 2.5), complex(3.75, 4.4), complex(5.0, 5.6),
     [sqrt(8n * Float64(μ2) * π) for n in 4:100]...]
@@ -217,7 +218,7 @@ A1 = hcat(reduce(hcat, ξs), reduce(hcat, ξsc))
 A2 = hcat(reduce(hcat, ξs2), reduce(hcat, ξs2c))
 
 D1 = DataFrame(A1, string.(Float64.([μ1, μ2, μ3, μ4, μ5, μ6, μ7])))
-D2 = DataFrame(A1, string.(Float64.([μ1, μ2, μ3, μ4, μ5, μ6, μ7])))
+D2 = DataFrame(A2, string.(Float64.([μ1, μ2, μ3, μ4, μ5, μ6, μ7])))
 CSV.write("$EXTRAS/first_quadrant.csv", D1)
 CSV.write("$EXTRAS/second_quadrant.csv", D2)
 #end
