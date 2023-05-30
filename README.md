@@ -7,7 +7,7 @@ This package contains code for reproducing the numerical results in our paper ht
 ## Movie from the paper 
 ![Animation of the saddle point contour](https://user-images.githubusercontent.com/95613936/206981155-b5461579-f525-4eeb-850a-717ab001883f.gif)
 
-The animation above shows the evolution of the saddle point contours over time for three different values of $\mu$, where the image shows $\operatorname{Re} h(s)$, where $h(s) = -\arctan(s)/2 - (z-s)^2/4t$, and the contour lines are the contour lines of $\operatorname{Im} h(s)$. The red points shown are the ones that we choose, according to our rule that the real parts are of equal size, and the white point is the other point. Notice that these chosen points never change over the entire animation. 
+The animation above shows the evolution of the saddle point contours over time for three different values of $\mu$, where the image shows $Re[h(s)]$, where $h(s) = -\arctan(s)/2 - (z-s)^2/4t$, and the contour lines are the contour lines of $Im[h(s)]$. The red points shown are the ones that we choose, according to our rule that the real parts are of equal size, and the white point is the other point. Notice that these chosen points never change over the entire animation. 
 
 This movie is created from https://github.com/DanielVandH/BurgersEquation.jl/blob/main/paper/steepest_descent_preliminaries.jl#L91-L221.
 
