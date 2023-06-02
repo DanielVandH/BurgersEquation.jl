@@ -58,8 +58,8 @@ end
 function Φ₀(x::AbstractVector{T}, y::AbstractVector{T}, μ::AbstractVector{T}; type="parabolic") where {T}
     Φ₀_vals = Array{Complex{T}}(undef, x, y, length(μ))
     for (k, m) in enumerate(μ)
-        for (j, Y) in enumerate(y)
-            for (i, X) in enumerate(x)
+         for (j, Y) in enumerate(y)
+           for (i, X) in enumerate(x)
                 Φ₀_vals[i, j, k] = Φ₀(X, Y, m; type=type)
             end
         end
@@ -78,8 +78,10 @@ function Φ₀(x::AbstractVector{T}, y::AbstractVector{T}, μ::T; type="paraboli
 end
 function Φ₀(x::AbstractVector{ArbReal{P}}, y::AbstractVector{ArbReal{P}}, μ::ArbReal{P}; type="parabolic") where {P}
     Φ₀_vals = Matrix{ArbComplex{P}}(undef, length(x), length(y))
-    for (j, Y) in enumerate(y)
-        for (i, X) in enumerate(x)
+    for j in eachindex(y)
+        Y = y[j]
+        for i in eachindex(x)
+            X = x[i]
             ξ = complex(X, Y) # ArbComplex(X, Y)
             Φ₀_vals[i, j] = Φ₀(ξ, μ; type=type)
         end
